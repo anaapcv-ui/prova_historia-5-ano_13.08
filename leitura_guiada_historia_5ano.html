@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📖 Leitura Guiada — Oficina da Nação | História 5º ano (Unidade 6)</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Comic Sans MS','Segoe UI',system-ui,sans-serif;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,.35) 0 2px, transparent 2px 46px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.35) 0 2px, transparent 2px 46px),
+      linear-gradient(160deg,#166534 0%,#15803d 45%,#b45309 100%);
+    min-height:100vh;color:#1c1917;padding:16px 14px 60px;
+  }
+  .wrap{max-width:900px;margin:0 auto;}
+
+  /* ===== ABAS ===== */
+  .abas{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;}
+  .abas a{
+    text-decoration:none;background:#fffbeb;color:#78350f;font-weight:bold;
+    padding:9px 14px;border-radius:14px;font-size:.95em;border:3px solid #d97706;
+    box-shadow:0 4px 0 #92400e;
+  }
+  .abas a.ativa{background:#fbbf24;color:#451a03;}
+  .abas a:hover{transform:translateY(-2px);}
+
+  .hero{
+    background:#fffbeb;border-radius:26px;padding:24px 22px;text-align:center;
+    box-shadow:0 12px 34px rgba(0,0,0,.3);margin-bottom:18px;border:5px solid #d97706;
+  }
+  .hero .tools{font-size:26px;letter-spacing:8px;opacity:.9;}
+  .hero h1{font-size:1.75em;color:#166534;margin:8px 0 4px;}
+  .hero .sub{color:#78350f;font-size:1.02em;}
+  .mascote{
+    background:#ecfdf5;border:3px dashed #15803d;border-radius:18px;
+    padding:12px 14px;margin-top:14px;color:#14532d;text-align:left;font-size:.98em;
+  }
+
+  /* ===== PLACAR ===== */
+  .placar{
+    position:sticky;top:8px;z-index:20;background:#fffbeb;border:4px solid #d97706;
+    border-radius:20px;padding:12px 16px;margin-bottom:18px;box-shadow:0 8px 20px rgba(0,0,0,.28);
+  }
+  .placar .linha{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between;}
+  .placar b{color:#166534;}
+  .barra{height:16px;background:#e7e5e4;border-radius:20px;overflow:hidden;margin-top:8px;border:2px solid #a8a29e;}
+  .barra i{display:block;height:100%;width:0;background:linear-gradient(90deg,#22c55e,#fbbf24);transition:width .4s;}
+  .estrelas{font-size:1.15em;letter-spacing:2px;}
+
+  /* ===== BLOCOS ===== */
+  .bloco{
+    background:#fffbeb;border-radius:22px;margin-bottom:16px;overflow:hidden;
+    box-shadow:0 8px 22px rgba(0,0,0,.22);border-left:12px solid #d97706;
+  }
+  .bloco .cab{
+    padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;
+    background:#fef3c7;
+  }
+  .bloco .cab:hover{background:#fde68a;}
+  .bloco .cab .emoji{font-size:2em;}
+  .bloco .cab h2{font-size:1.15em;color:#78350f;flex:1;}
+  .bloco .cab .seta{font-size:1.3em;color:#78350f;transition:transform .25s;}
+  .bloco.aberto .cab .seta{transform:rotate(90deg);}
+  .bloco .corpo{display:none;padding:6px 18px 20px;}
+  .bloco.aberto .corpo{display:block;}
+  .bloco p{margin:12px 0;line-height:1.65;font-size:1.04em;}
+  .bloco .ok{background:#dcfce7;color:#14532d;border-radius:12px;padding:6px 12px;font-weight:bold;font-size:.9em;display:inline-block;}
+
+  .cores1{border-left-color:#0ea5e9;} .cores1 .cab{background:#e0f2fe;} .cores1 .cab h2{color:#075985;}
+  .cores2{border-left-color:#16a34a;} .cores2 .cab{background:#dcfce7;} .cores2 .cab h2{color:#14532d;}
+  .cores3{border-left-color:#d97706;} .cores3 .cab{background:#fef3c7;} .cores3 .cab h2{color:#78350f;}
+  .cores4{border-left-color:#eab308;} .cores4 .cab{background:#fef9c3;} .cores4 .cab h2{color:#713f12;}
+  .cores5{border-left-color:#ec4899;} .cores5 .cab{background:#fce7f3;} .cores5 .cab h2{color:#831843;}
+  .cores6{border-left-color:#8b5cf6;} .cores6 .cab{background:#ede9fe;} .cores6 .cab h2{color:#4c1d95;}
+  .cores7{border-left-color:#0d9488;} .cores7 .cab{background:#ccfbf1;} .cores7 .cab h2{color:#134e4a;}
+
+  .caixa-chave{
+    background:#fff;border:3px solid #15803d;border-radius:18px;padding:14px 16px;margin:16px 0;
+  }
+  .caixa-chave h3{color:#166534;font-size:1.05em;margin-bottom:8px;}
+  .caixa-chave ul{list-style:none;}
+  .caixa-chave li{padding:7px 0;border-bottom:1px dashed #d6d3d1;font-size:1em;}
+  .caixa-chave li:last-child{border:none;}
+  .caixa-chave li b{color:#b45309;}
+
+  .postit{
+    background:#fef08a;border-radius:6px;padding:12px 14px;margin:14px 0;
+    box-shadow:3px 3px 8px rgba(0,0,0,.18);transform:rotate(-.6deg);color:#713f12;font-size:.99em;
+  }
+  .pegadinha{
+    background:#fee2e2;border-left:8px solid #dc2626;border-radius:12px;padding:12px 14px;
+    margin:14px 0;color:#7f1d1d;font-size:.99em;
+  }
+
+  /* ===== PERGUNTAS ===== */
+  .pergunta{background:#f5f5f4;border-radius:18px;padding:15px 16px;margin:14px 0;border:2px solid #d6d3d1;}
+  .pergunta .enun{font-weight:bold;color:#292524;margin-bottom:10px;line-height:1.5;}
+  .alt{
+    display:block;width:100%;text-align:left;background:#fff;border:2px solid #d6d3d1;
+    border-radius:12px;padding:11px 13px;margin:7px 0;cursor:pointer;font-family:inherit;
+    font-size:1em;transition:.15s;
+  }
+  .alt:hover:not(:disabled){background:#fef3c7;border-color:#d97706;}
+  .alt:disabled{cursor:default;}
+  .alt.certa{background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:bold;}
+  .alt.errada{background:#fee2e2;border-color:#dc2626;color:#7f1d1d;}
+  .feedback{margin-top:10px;padding:11px 13px;border-radius:12px;font-size:.97em;display:none;line-height:1.5;}
+  .feedback.mostra{display:block;}
+  .feedback.bom{background:#dcfce7;color:#14532d;}
+  .feedback.ops{background:#fef3c7;color:#78350f;}
+
+  /* ===== REVISÃO FINAL ===== */
+  .revisao{
+    background:#fffbeb;border:5px solid #16a34a;border-radius:24px;padding:20px;margin-top:22px;
+    box-shadow:0 10px 26px rgba(0,0,0,.25);
+  }
+  .revisao h2{color:#166534;text-align:center;font-size:1.35em;margin-bottom:12px;}
+
+  /* ===== SALVAMENTO ===== */
+  .salvar{
+    background:#1c1917;color:#fef3c7;border-radius:20px;padding:16px 18px;margin-top:22px;
+  }
+  .salvar h3{font-size:1.05em;margin-bottom:8px;}
+  .salvar .data{font-size:.88em;opacity:.85;margin-bottom:10px;}
+  .salvar button{
+    background:#fbbf24;color:#451a03;border:none;border-radius:12px;padding:9px 14px;margin:4px 4px 0 0;
+    font-family:inherit;font-weight:bold;cursor:pointer;font-size:.94em;
+  }
+  .salvar button:hover{background:#f59e0b;}
+  .salvar .aviso{font-size:.85em;margin-top:10px;opacity:.8;}
+
+  /* ===== MODAL ===== */
+  .modal-fundo{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;
+    align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-fundo.abre{display:flex;}
+  .modal{
+    background:#fffbeb;border-radius:22px;padding:22px;max-width:420px;width:100%;
+    border:5px solid #d97706;text-align:center;
+  }
+  .modal h3{color:#78350f;margin-bottom:10px;}
+  .modal p{margin-bottom:16px;line-height:1.5;}
+  .modal button{
+    background:#16a34a;color:#fff;border:none;border-radius:12px;padding:10px 18px;
+    font-family:inherit;font-weight:bold;cursor:pointer;margin:0 5px;
+  }
+  .modal button.cinza{background:#78716c;}
+
+  .proximo{
+    display:block;text-align:center;background:#fbbf24;color:#451a03;text-decoration:none;
+    font-weight:bold;padding:16px;border-radius:20px;margin-top:22px;font-size:1.1em;
+    border:4px solid #d97706;box-shadow:0 6px 0 #92400e;
+  }
+  .proximo:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="abas">
+    <a href="index.html">🏠 Início</a>
+    <a href="leitura_guiada_historia_5ano.html" class="ativa">📖 Leitura Guiada</a>
+    <a href="jogo_vf_historia_5ano.html">🎯 Quiz V ou F</a>
+    <a href="resumo_historia_5ano.html">🗺️ Resumo</a>
+    <a href="simulado_historia_5ano.html">📝 Simulado</a>
+  </nav>
+
+  <div class="hero">
+    <div class="tools">🔨 🧱 📐 🏗️ ⚒️</div>
+    <h1>Oficina da Nação</h1>
+    <div class="sub">📖 Leitura Guiada — História, 5º ano · Unidade 6: A construção de uma nação</div>
+    <div class="mascote">
+      🦉 <b>Mestre Coruja, o mestre de obras, avisa:</b> um país não nasce pronto — ele é
+      <b>construído</b>, peça por peça, ao longo de muitos anos. Nesta oficina você vai montar
+      7 peças. Leia cada uma com calma e responda às 3 perguntas do final. Cada acerto rende
+      uma ⭐. Bom trabalho, jovem aprendiz!
+    </div>
+  </div>
+
+  <div class="placar">
+    <div class="linha">
+      <span><b>Peças montadas:</b> <span id="pProg">0</span> de 24</span>
+      <span class="estrelas" id="pEstrelas">⭐ 0</span>
+    </div>
+    <div class="barra"><i id="pBarra"></i></div>
+  </div>
+
+  <div id="blocos"></div>
+
+  <div class="revisao">
+    <h2>🏆 Vistoria final da obra</h2>
+    <p style="text-align:center;margin-bottom:14px;">
+      A construção está quase pronta! Responda a estas 3 perguntas que misturam
+      tudo o que você montou.
+    </p>
+    <div id="revisaoPerguntas"></div>
+  </div>
+
+  <div class="salvar">
+    <h3>💾 Suas respostas ficam guardadas</h3>
+    <div class="data" id="dataSalvo">Ainda não salvo nesta sessão.</div>
+    <button onclick="exportar()">📥 Exportar</button>
+    <button onclick="document.getElementById('arqImp').click()">📤 Importar</button>
+    <button onclick="pedirZerar()">🗑️ Zerar tudo</button>
+    <input type="file" id="arqImp" accept=".json" style="display:none" onchange="importar(event)">
+    <div class="aviso">Ao reabrir esta página no mesmo computador, tudo volta como estava.</div>
+  </div>
+
+  <a class="proximo" href="jogo_vf_historia_5ano.html">➡️ Próximo material: 🎯 Quiz Verdadeiro ou Falso</a>
+</div>
+
+<div class="modal-fundo" id="modalFundo">
+  <div class="modal">
+    <h3 id="modalTit">Atenção</h3>
+    <p id="modalMsg"></p>
+    <div id="modalBotoes"></div>
+  </div>
+</div>
+
+<script>
+/* ================= ARMAZENAMENTO SEGURO ================= */
+var memoria = {};
+function salvarDado(chave, valor){
+  try { localStorage.setItem(chave, valor); } catch(e) { memoria[chave] = valor; }
+}
+function lerDado(chave){
+  try { var v = localStorage.getItem(chave); return v !== null ? v : (memoria[chave] || null); }
+  catch(e){ return memoria[chave] || null; }
+}
+function apagarDado(chave){
+  try { localStorage.removeItem(chave); } catch(e) {}
+  delete memoria[chave];
+}
+var CHAVE = 'oficinaNacao_leitura_v1';
+
+/* ================= MODAL ================= */
+function abrirModal(titulo, msg, botoes){
+  document.getElementById('modalTit').textContent = titulo;
+  document.getElementById('modalMsg').textContent = msg;
+  var cx = document.getElementById('modalBotoes');
+  cx.innerHTML = '';
+  botoes.forEach(function(b){
+    var bt = document.createElement('button');
+    bt.textContent = b.texto;
+    if(b.cinza) bt.className = 'cinza';
+    bt.onclick = function(){ fecharModal(); if(b.acao) b.acao(); };
+    cx.appendChild(bt);
+  });
+  document.getElementById('modalFundo').classList.add('abre');
+}
+function fecharModal(){ document.getElementById('modalFundo').classList.remove('abre'); }
+
+/* ================= CONTEÚDO ================= */
+var BLOCOS = [
+{
+  emoji:'🏛️', titulo:'Peça 1 — O que faz um país ser um Estado',
+  texto:[
+    'Imagine que um país é uma casa. Para a casa existir de verdade, ela precisa de três coisas: o <b>terreno</b> (o território), as <b>pessoas</b> que moram nela (a população) e alguém que <b>manda na casa e cria as regras</b> (o governo). Quando um lugar tem essas três coisas e decide sozinho o seu destino, dizemos que ele é um <b>Estado</b>.',
+    'Os primeiros Estados da história nasceram junto com as cidades: as pessoas se fixavam num lugar, produziam suas riquezas, faziam comércio, criavam sua cultura e tinham um governo próprio para organizar tudo isso.',
+    'Com a chegada dos portugueses, em <b>1500</b>, as terras que hoje formam o Brasil passaram por algo parecido: nasceram povoados que viraram vilas e cidades, muita riqueza foi produzida e a cultura brasileira foi tomando forma pelo encontro de povos de origens diferentes. <b>Mas faltava uma peça:</b> quem mandava aqui era Portugal. O Brasil era uma <b>colônia</b> e, por isso, fazia parte do Estado português.',
+    'A construção do Estado brasileiro começou em <b>1808</b>, quando a família real portuguesa veio para a América portuguesa e Dom João VI passou a governar daqui. Em <b>1822</b>, o Brasil declarou independência e virou um <b>império</b>, com governante próprio: <b>Dom Pedro I</b>. Em <b>1824</b>, ele estabeleceu a <b>Constituição</b>, que organizava os poderes do Estado — na época eram <b>quatro</b>: Executivo, Legislativo, Judiciário e <b>Moderador</b>. Essas leis, porém, representavam os interesses de poucos.',
+    'Em <b>1831</b>, Dom Pedro I abdicou (largou o trono) em favor do filho mais novo, Dom Pedro II. E, mesmo virando um Estado, o Brasil manteve por muitos anos características da sociedade colonial, como o <b>trabalho escravizado</b> e a exclusão dos mais pobres da vida política.'
+  ],
+  chaves:[
+    ['Estado','país que tem território, população e governo próprios, e decide sozinho (soberania).'],
+    ['Colônia','terra controlada e organizada por outro país. O Brasil foi colônia de Portugal.'],
+    ['Constituição de 1824','conjunto de leis criado por Dom Pedro I. Tinha 4 poderes: Executivo, Legislativo, Judiciário e Moderador.'],
+    ['Abdicar','desistir do trono. Dom Pedro I abdicou em 1831 em favor de Dom Pedro II.']
+  ],
+  postit:'📌 <b>Dica de prova:</b> decore o trio <b>TERRITÓRIO + POPULAÇÃO + GOVERNO</b>. É a resposta de qualquer pergunta sobre "o que é um Estado".',
+  pegadinha:'⚠️ <b>Pegadinha:</b> o Brasil <u>não</u> virou Estado em 1500, com a chegada dos portugueses. Em 1500 ele começou a ser <b>colônia</b>. O processo de virar Estado começou em 1808 e ganhou força em 1822.',
+  perguntas:[
+    { enun:'Um país só é considerado um Estado quando tem:',
+      alts:['Muitas cidades grandes e ricas','Uma língua diferente da dos vizinhos','Território, população e governo próprios','Um rei muito poderoso'],
+      certa:2,
+      exp:'É o trio da prova: território (o terreno), população (as pessoas) e governo próprio (quem manda e cria as regras).' },
+    { enun:'Por que dizemos que o Brasil colonial fazia parte do Estado de Portugal?',
+      alts:['Porque Portugal controlava e organizava tudo o que era feito aqui','Porque aqui não morava ninguém','Porque o território ainda não tinha sido explorado','Porque não existia comércio na colônia'],
+      certa:0,
+      exp:'O Brasil tinha território, população e produzia riquezas — mas quem governava era Portugal. Faltava a peça do governo próprio.' },
+    { enun:'Quantos poderes a Constituição de 1824 organizava?',
+      alts:['Dois','Três','Cinco','Quatro'],
+      certa:3,
+      exp:'Eram quatro: Executivo, Legislativo, Judiciário e Moderador. O Moderador é o que hoje não existe mais — por isso ele cai muito na prova.' }
+  ]
+},
+{
+  emoji:'⚓', titulo:'Peça 2 — O governo-geral e o primeiro alicerce',
+  texto:[
+    'No começo, Portugal teve muita dificuldade para ocupar e explorar uma colônia tão <b>enorme</b>. A solução foi criar, em <b>1549</b>, o <b>governo-geral</b>: uma forma de <b>centralizar</b> (juntar num lugar só) a administração da América portuguesa.',
+    'Quem cuidava das terras em nome do rei de Portugal era o <b>governador-geral</b>. O primeiro deles foi <b>Tomé de Sousa</b>, que governou de <b>1549 a 1553</b>.',
+    'Tomé de Sousa não veio sozinho. Com ele desembarcaram os primeiros <b>funcionários do rei</b>, <b>soldados</b>, <b>trabalhadores de diferentes ofícios</b> (pedreiros, carpinteiros, ferreiros...) e os <b>padres jesuítas</b>.',
+    'Os <b>jesuítas</b> eram religiosos da <b>Companhia de Jesus</b>, uma ordem da Igreja Católica fundada em <b>1534</b>, cuja missão era espalhar a fé católica pelo mundo.',
+    'Uma das primeiras ações de Tomé de Sousa foi fundar <b>Salvador</b>, em <b>1549</b>: a <b>primeira capital do Brasil</b>. Ele também criou cargos administrativos para ajudá-lo a cuidar do dinheiro e da justiça na Colônia.',
+    'Foi nesse cenário que a sociedade brasileira começou a se formar, pelo contato — muitas vezes violento — entre <b>europeus</b>, <b>povos indígenas</b> e <b>africanos escravizados</b>.'
+  ],
+  chaves:[
+    ['Governo-geral','criado em 1549 para centralizar a administração da colônia.'],
+    ['Tomé de Sousa','1º governador-geral (1549–1553). Fundou Salvador.'],
+    ['Salvador','fundada em 1549, foi a primeira capital do Brasil.'],
+    ['Jesuítas','padres da Companhia de Jesus (fundada em 1534). Missão: propagar a fé católica.']
+  ],
+  postit:'📌 <b>Dica de prova:</b> 1549 é um ano que aparece três vezes! Criação do governo-geral + chegada de Tomé de Sousa + fundação de Salvador.',
+  pegadinha:'⚠️ <b>Pegadinha:</b> Salvador foi a primeira capital, mas <u>não</u> foi capital para sempre. Em <b>1763</b> a capital passou a ser o <b>Rio de Janeiro</b> (você vai ver isso na Peça 5).',
+  perguntas:[
+    { enun:'Por que a Coroa portuguesa criou o governo-geral em 1549?',
+      alts:['Para acabar com a escravidão na colônia','Para centralizar a administração de uma colônia muito extensa','Para dar independência ao Brasil','Para expulsar os jesuítas do território'],
+      certa:1,
+      exp:'A colônia era gigante e difícil de controlar. Centralizar significa juntar o comando num lugar só, com um responsável.' },
+    { enun:'Quem veio ao Brasil junto com Tomé de Sousa?',
+      alts:['Apenas soldados portugueses','Somente comerciantes ingleses','Funcionários do rei, soldados, trabalhadores de vários ofícios e padres jesuítas','Somente a família real portuguesa'],
+      certa:2,
+      exp:'Era uma verdadeira equipe de obra: gente para governar, defender, trabalhar e catequizar.' },
+    { enun:'Qual era a missão da Companhia de Jesus, fundada em 1534?',
+      alts:['Propagar a fé católica pelo mundo','Descobrir ouro no interior da colônia','Cobrar impostos dos mineradores','Organizar o comércio de açúcar'],
+      certa:0,
+      exp:'Os jesuítas eram religiosos, não comerciantes nem cobradores de impostos. A missão deles era espalhar o catolicismo.' }
+  ]
+},
+{
+  emoji:'⚔️', titulo:'Peça 3 — Jesuítas e bandeirantes: dois interesses, um conflito',
+  texto:[
+    'Na capitania de <b>São Vicente</b>, os jesuítas começaram o projeto de <b>catequizar</b> os povos indígenas. Para isso criaram as <b>missões</b> (também chamadas <b>reduções</b>). Nelas, os indígenas cuidavam da roça, criavam animais, faziam artesanato e construíam igrejas. Como estratégia, os padres <b>aprenderam a língua dos nativos</b> e usaram <b>música, teatro e canto</b> para ensinar religião.',
+    'Diferentemente das capitanias do Nordeste, São Vicente <b>não gerava tanta riqueza</b>: o açúcar ficava caro por causa da <b>distância</b> até os centros de distribuição para a Europa, e o <b>solo e o clima</b> da região não favoreciam o plantio da cana-de-açúcar.',
+    'A maioria dos colonos paulistas era <b>pobre</b>. Para sobreviver, plantavam mandioca, milho, trigo, algodão e frutas da região. Como quase não circulava dinheiro na Colônia, eles usavam o que produziam para <b>trocar</b> e até para pagar dívidas.',
+    'Entre os pioneiros destacou-se <b>João Ramalho</b>, um português pobre que se casou com a filha do cacique <b>Tibiriçá</b>, de uma aldeia no Vale do Anhangabaú (hoje, a cidade de São Paulo). Ele ajudou os jesuítas a se instalarem no <b>Planalto de Piratininga</b>, onde depois nasceu a <b>Vila de São Paulo</b>. Acredita-se que o próprio Tibiriçá tenha sido o primeiro indígena catequizado pelos jesuítas no Brasil.',
+    'Mas a parceria durou pouco. Os dois grupos queriam os indígenas — <b>por motivos opostos</b>. Os <b>jesuítas</b> queriam catequizá-los e impor costumes europeus. Os <b>colonos paulistas</b> queriam <b>escravizá-los</b>: primeiro porque não tinham dinheiro para comprar mão de obra africana; segundo porque queriam lucrar vendendo indígenas escravizados dentro da própria Colônia.',
+    'Organizados em grupos e carregando <b>bandeiras</b>, os colonos ficaram conhecidos como <b>bandeirantes</b>. Eles faziam três coisas: <b>aprisionar indígenas</b> para escravizar, <b>destruir quilombos</b> para capturar pessoas que fugiam da escravidão e <b>procurar pedras e metais preciosos</b>.',
+    'Nessas expedições, os bandeirantes entraram cada vez mais no interior (o <b>sertão</b>) e acabaram <b>expandindo o território brasileiro</b>, ultrapassando o limite do <b>Tratado de Tordesilhas</b>. Como os indígenas conheciam bem o território e se escondiam, os bandeirantes passaram a <b>invadir as missões jesuíticas</b>, cheias de indígenas já acostumados ao trabalho na lavoura.',
+    'Muitos senhores de engenho <b>pagavam</b> aos bandeirantes para destruir quilombos. O grupo mais famoso foi o de <b>Domingos Jorge Velho</b>, com milhares de homens, que em <b>1694</b> descobriu e destruiu o <b>Quilombo dos Palmares</b>, matando seu líder, <b>Zumbi dos Palmares</b>. Palmares ficava no atual estado de <b>Alagoas</b>, chegou a reunir <b>mais de 20 mil pessoas</b> e resistiu por <b>mais de 100 anos</b>.'
+  ],
+  chaves:[
+    ['Missões (reduções)','aldeias organizadas pelos jesuítas para catequizar indígenas.'],
+    ['Bandeirantes','paulistas que entravam no sertão em expedições, carregando bandeiras.'],
+    ['3 atividades dos bandeirantes','aprisionar indígenas · destruir quilombos · procurar ouro e pedras preciosas.'],
+    ['Quilombo','comunidade formada por pessoas que fugiam da escravidão.'],
+    ['Palmares','maior quilombo (Alagoas), +20 mil pessoas, destruído em 1694 por Domingos Jorge Velho.']
+  ],
+  postit:'📌 <b>Dica de prova:</b> jesuítas queriam <b>catequizar</b>; paulistas queriam <b>escravizar</b>. Interesses <b>diferentes</b> — é essa a palavra que a prova pede.',
+  pegadinha:'⚠️ <b>Pegadinha:</b> os bandeirantes expandiram o território para <u>além</u> do Tratado de Tordesilhas. Não foram eles que criaram o tratado — eles o ultrapassaram!',
+  perguntas:[
+    { enun:'Por que a capitania de São Vicente não prosperou como as do Nordeste?',
+      alts:['Porque não havia povos indígenas na região','Porque a distância encarecia o açúcar e o solo e o clima não favoreciam a cana','Porque os colonos se recusavam a trabalhar','Porque Portugal proibiu qualquer plantio na região'],
+      certa:1,
+      exp:'São dois motivos juntos: a distância dos centros de distribuição para a Europa e as condições de solo e clima.' },
+    { enun:'Qual era a diferença entre o interesse dos jesuítas e o dos colonos paulistas pelos indígenas?',
+      alts:['Os dois queriam apenas catequizá-los','Os jesuítas queriam escravizá-los e os colonos, catequizá-los','Os jesuítas queriam catequizá-los e os colonos, escravizá-los','Nenhum dos dois grupos tinha interesse nos indígenas'],
+      certa:2,
+      exp:'Cuidado com a ordem! Padres = catequizar. Colonos paulistas = escravizar. Por isso a parceria acabou.' },
+    { enun:'O que aconteceu com o Quilombo dos Palmares em 1694?',
+      alts:['Foi destruído pelo grupo de bandeirantes de Domingos Jorge Velho','Foi transformado em uma vila oficial da Coroa','Foi comprado pelos jesuítas','Foi abandonado pelos moradores por falta de água'],
+      certa:0,
+      exp:'Palmares resistiu mais de 100 anos e reuniu mais de 20 mil pessoas, até ser destruído em 1694. Seu líder, Zumbi, foi morto.' }
+  ]
+},
+{
+  emoji:'⛏️', titulo:'Peça 4 — Ouro em Minas e a Conjuração Mineira',
+  texto:[
+    'Por volta de <b>1690</b>, os bandeirantes descobriram minas de <b>ouro e diamantes</b> no interior da Colônia, principalmente na região da atual <b>Minas Gerais</b>. A notícia correu e <b>milhares de colonos migraram</b> para lá em busca de riqueza.',
+    'Essa migração criou um novo tipo de sociedade: mais <b>urbana</b> e com atividades produtivas mais <b>variadas</b>. A região chegou a ser a <b>mais populosa e mais rica</b> de toda a América portuguesa. Por causa dessa importância, em <b>1720</b> a Coroa criou a <b>capitania das Minas Gerais</b>.',
+    'Para controlar tanto dinheiro, a Coroa criou instituições: as <b>Câmaras Municipais</b>, que organizavam o comércio, a pecuária e os serviços em cada vila; e as <b>casas de fundição</b>, que derretiam o ouro e o transformavam em <b>barras marcadas com o selo real</b>.',
+    'E criou impostos. O principal foi o <b>quinto</b>: <b>20%</b> de todo o ouro e diamante extraído tinha de ir para a Coroa portuguesa. Além do quinto, exigia-se ainda uma quantia fixa por ano de todos os mineradores.',
+    'A partir da década de <b>1760</b>, a extração de ouro começou a <b>diminuir</b>. Nem os mais ricos conseguiam pagar os impostos, e a capitania acumulou uma dívida enorme. A solução da Coroa foi a <b>derrama</b>: funcionários do rei <b>invadiam as casas</b> para confiscar bens que cobrissem as dívidas.',
+    'A insatisfação cresceu, principalmente entre a <b>elite colonial</b> — fazendeiros, grandes comerciantes, intelectuais, militares e padres. Entre <b>1788 e 1789</b>, colonos endividados de <b>Vila Rica</b> começaram a planejar uma revolta: queriam transformar Minas Gerais em uma <b>república</b>, criar uma <b>universidade</b> e instalar <b>fábricas</b>.',
+    'Mas eles <b>não se entenderam sobre a escravidão</b>: uma parte queria acabar com ela, mas a maioria — donos de terras e de pessoas escravizadas — queria mantê-la. Ou seja, a independência de Minas atenderia principalmente aos interesses da <b>elite local</b>.',
+    'O plano era começar a revolta no dia em que a derrama fosse marcada. Só que o governador foi <b>avisado</b>, e os revoltosos acabaram presos e condenados. Entre eles estava <b>Joaquim José da Silva Xavier</b>, o <b>Tiradentes</b>. Como um dos mais ativos, ele assumiu a responsabilidade pela tentativa, foi declarado inimigo da Monarquia, teve os bens confiscados e foi <b>executado em 21 de abril de 1792</b>, na cidade do Rio de Janeiro.',
+    'O movimento recebeu dois nomes. A Coroa chamou de <b>Inconfidência Mineira</b> — "inconfidência" quer dizer <b>infidelidade</b>, traição. Também é chamado de <b>Conjuração Mineira</b> — "conjuração" quer dizer <b>aliança</b>. As ideias de liberdade que inspiraram tudo isso vieram da Europa, com jovens de famílias ricas que estudavam lá e tinham contato com as <b>ideias iluministas</b>, que defendiam liberdade econômica e política e igualdade entre as pessoas.'
+  ],
+  chaves:[
+    ['Quinto','imposto de 20% sobre todo o ouro e diamante extraído.'],
+    ['Derrama','cobrança forçada dos impostos atrasados, invadindo casas para confiscar bens.'],
+    ['Casas de fundição','derretiam o ouro e faziam barras com o selo real.'],
+    ['Inconfidência','infidelidade (nome dado pela Coroa). Conjuração = aliança.'],
+    ['Tiradentes','Joaquim José da Silva Xavier. Executado em 21 de abril de 1792, no Rio de Janeiro.']
+  ],
+  postit:'📌 <b>Dica de prova:</b> <b>QUINTO</b> = imposto de 20%. <b>DERRAMA</b> = cobrança forçada dos atrasados. Não troque um pelo outro!',
+  pegadinha:'⚠️ <b>Pegadinha:</b> a Conjuração Mineira <u>não</u> queria acabar com a escravidão — a maioria dos participantes era dona de pessoas escravizadas. Quem queria abolir a escravidão foi a Conjuração <b>Baiana</b>.',
+  perguntas:[
+    { enun:'O que era o "quinto"?',
+      alts:['A invasão das casas para confiscar bens','O nome do quinto governador-geral do Brasil','Uma bandeira usada pelos bandeirantes','O imposto de 20% sobre o ouro e os diamantes extraídos'],
+      certa:3,
+      exp:'"Quinto" vem de um quinto = 1/5 = 20%. Era a fatia que ia obrigatoriamente para a Coroa portuguesa.' },
+    { enun:'Coloque em ordem: o que aconteceu PRIMEIRO na região das Minas?',
+      alts:['A criação da capitania das Minas Gerais, em 1720','A descoberta de ouro e diamantes pelos bandeirantes, por volta de 1690','A migração de milhares de colonos para as minas','O surgimento de uma sociedade urbana e rica'],
+      certa:1,
+      exp:'A ordem é: 1) descoberta do ouro (~1690) → 2) migração de colonos → 3) sociedade urbana e rica → 4) criação da capitania (1720).' },
+    { enun:'Por que a Coroa chamou o movimento de "Inconfidência Mineira"?',
+      alts:['Porque "inconfidência" significa infidelidade, ou seja, traição ao rei','Porque o movimento aconteceu em segredo dentro de uma igreja','Porque os participantes eram todos mineradores pobres','Porque o movimento não chegou a ser planejado'],
+      certa:0,
+      exp:'Para a Coroa, quem se rebelava era infiel ao rei. Já os brasileiros preferem "Conjuração", que significa aliança.' }
+  ]
+},
+{
+  emoji:'🧵', titulo:'Peça 5 — Na Bahia, o sonho de uma república',
+  texto:[
+    'Em <b>1798</b>, poucos anos depois da execução de Tiradentes, foi a vez da <b>Bahia</b> tentar se libertar da Coroa portuguesa.',
+    'Nessa época, <b>Salvador já não era mais a capital</b> — desde <b>1763</b> a capital passou a ser o <b>Rio de Janeiro</b>. Mas Salvador continuava sendo uma das cidades mais importantes: tinha cerca de <b>40 mil habitantes</b> e um comércio de exportação muito forte, principalmente de <b>açúcar</b>.',
+    'Por volta da década de <b>1770</b>, uma grave <b>crise econômica</b> atingiu a população. Ela começou quando os grandes proprietários passaram a priorizar o plantio da <b>cana-de-açúcar</b> (para exportar) em vez de plantar <b>alimentos</b>. Resultado: começou a faltar comida, e o pouco que havia ficou <b>caro</b>.',
+    'Somando a carestia aos <b>impostos altos</b>, o descontentamento tomou conta da cidade. Então membros da elite local, <b>comerciantes, alfaiates, soldados, artesãos e pessoas escravizadas</b> se organizaram para espalhar ideias de liberdade pelas ruas de Salvador, colando <b>panfletos</b> em portas de igrejas e de casas, chamando a população para a revolta.',
+    'Os panfletos diziam o que queriam para a Bahia: transformar a capitania em uma <b>república</b>, <b>aumentar os salários dos soldados</b>, <b>acabar com a escravidão</b> e garantir a <b>liberdade de comércio exterior</b>.',
+    'Por causa do que tinha acontecido em Minas anos antes, a reação da Coroa foi <b>rápida e violenta</b>: os principais líderes foram presos e condenados à morte em <b>1799</b>.',
+    'Esse movimento tinha <b>características populares</b>, porque muitos participantes eram <b>trabalhadores livres e pessoas escravizadas</b>, que lutavam por melhores condições de vida e por liberdade. Ele recebeu três nomes: <b>Conjuração Baiana</b>; <b>Revolta dos Búzios</b>, por causa das pulseiras com búzios (conchas) que os revoltosos usavam para se identificar; e <b>Revolta dos Alfaiates</b>, porque alguns alfaiates assumiram a liderança.'
+  ],
+  chaves:[
+    ['Conjuração Baiana','1798, em Salvador. Movimento com forte participação popular.'],
+    ['Objetivos','república · salários maiores para soldados · fim da escravidão · liberdade de comércio.'],
+    ['Revolta dos Búzios','por causa das pulseiras de búzios usadas para se identificar.'],
+    ['Revolta dos Alfaiates','porque alfaiates assumiram a liderança do movimento.'],
+    ['1799','ano em que os líderes foram presos e condenados à morte.']
+  ],
+  postit:'📌 <b>Dica de prova:</b> compare os dois movimentos! <b>Mineira (1789)</b> = elite, mantinha a escravidão. <b>Baiana (1798)</b> = popular, queria acabar com a escravidão. Os dois queriam <b>república</b>.',
+  pegadinha:'⚠️ <b>Pegadinha:</b> quando a Conjuração Baiana aconteceu, Salvador <u>já não era</u> a capital — o Rio de Janeiro assumiu esse posto em 1763.',
+  perguntas:[
+    { enun:'Por que se diz que a Conjuração Baiana tinha características populares?',
+      alts:['Porque foi organizada apenas por padres','Porque muitos participantes eram trabalhadores livres e pessoas escravizadas','Porque contou com o apoio do rei de Portugal','Porque só participaram grandes donos de terras'],
+      certa:1,
+      exp:'Alfaiates, soldados, artesãos, comerciantes e escravizados participaram — gente comum, não só a elite.' },
+    { enun:'Qual destes NÃO era um objetivo da Conjuração Baiana?',
+      alts:['Transformar a capitania em uma república','Acabar com a escravidão','Manter o monopólio comercial de Portugal','Aumentar o salário dos soldados'],
+      certa:2,
+      exp:'Era o contrário: eles queriam LIBERDADE de comércio exterior, e não manter o controle português.' },
+    { enun:'O movimento também é chamado de Revolta dos Búzios porque:',
+      alts:['Aconteceu na cidade de Búzios, no Rio de Janeiro','Os revoltosos usavam pulseiras com búzios para se identificar','Os líderes eram pescadores de búzios','Os panfletos eram escritos em conchas'],
+      certa:1,
+      exp:'Os búzios (conchas) nas pulseiras eram o sinal secreto de quem fazia parte do movimento.' }
+  ]
+},
+{
+  emoji:'👑', titulo:'Peça 6 — A Independência do Brasil (1822)',
+  texto:[
+    'A Independência do Brasil, em <b>7 de setembro de 1822</b>, não foi um acontecimento de um dia só: foi um <b>processo</b> que começou em <b>1808</b>, quando a Corte portuguesa se transferiu para o Brasil.',
+    'Logo ao chegar, <b>Dom João VI</b> assinou um decreto que <b>abria os portos brasileiros</b> às nações europeias aliadas de Portugal. Isso significou o início da <b>liberdade econômica</b> do Brasil: agora dava para comerciar com outros países, não só com Portugal.',
+    '<b>De 1808 a 1815:</b> além da abertura dos portos, a Corte se instalou no Rio de Janeiro e o Brasil virou a <b>sede do governo português</b>. Foram criadas instituições importantes: o <b>Banco do Brasil</b>, a <b>Biblioteca Real</b>, a <b>Imprensa Régia</b> e as primeiras instituições de <b>ensino superior</b>.',
+    '<b>De 1815 a 1822:</b> o Brasil foi elevado a parte integrante do <b>Reino Unido de Portugal</b>, ou seja, <b>deixou de ser colônia</b>. As capitanias passaram a se chamar <b>províncias</b>. Esse período também marca o início das <b>tensões</b> entre portugueses, que queriam retomar o controle, e brasileiros, que não queriam perder a liberdade econômica.',
+    'Em <b>1821</b>, os portugueses exigiram o retorno da família real. Dom João VI voltou, mas deixou aqui o filho mais velho, <b>Dom Pedro</b>, como <b>príncipe regente</b>. Isso desagradou os portugueses, que passaram a exigir também o retorno de Dom Pedro.',
+    'A elite brasileira — grandes comerciantes e ricos fazendeiros — não queria perder a liberdade econômica conquistada. Começou uma campanha para que Dom Pedro ficasse. Em <b>9 de janeiro de 1822</b>, depois de receber um abaixo-assinado com cerca de <b>8 mil assinaturas</b>, ele declarou publicamente: <i>"Se é para o bem de todos e felicidade geral da nação, estou pronto: digam ao povo que fico"</i>. Esse episódio ficou conhecido como o <b>Dia do Fico</b>.',
+    'A decisão aumentou as tensões. Os soldados portugueses, por exemplo, foram <b>expulsos</b> por se recusarem a jurar fidelidade a Dom Pedro. E, de Portugal, ameaçava-se enviar tropas.',
+    'Em <b>7 de setembro de 1822</b>, às margens do <b>riacho do Ipiranga</b>, em São Paulo, Dom Pedro rompeu com Portugal e declarou a Independência, dizendo a famosa frase: <i>"Brasileiros, de hoje em diante nosso lema será: Independência ou morte"</i>. Aos <b>24 anos</b>, foi coroado o <b>primeiro imperador</b>, com o título de <b>Dom Pedro I</b>, e o país passou a se chamar <b>Império do Brasil</b>.',
+    'Mas atenção: a Independência <b>não acabou com a escravidão</b>. Pelo contrário — ela continuou sendo a base do trabalho no Brasil durante todo o século XIX, inclusive na produção de <b>café</b>, que virou o principal produto de exportação quando a mineração entrou em declínio. A sociedade manteve hábitos coloniais, os mais pobres não tiveram melhora de vida e as cidades continuaram sem infraestrutura.'
+  ],
+  chaves:[
+    ['1808','vinda da Corte + abertura dos portos às nações amigas = início da liberdade econômica.'],
+    ['1815','Brasil elevado a Reino Unido de Portugal: deixa de ser colônia; capitanias viram províncias.'],
+    ['9 de janeiro de 1822','Dia do Fico. Abaixo-assinado com cerca de 8 mil assinaturas.'],
+    ['7 de setembro de 1822','Independência, às margens do riacho do Ipiranga (SP).'],
+    ['Dom Pedro I','coroado 1º imperador aos 24 anos. O país vira Império do Brasil.']
+  ],
+  postit:'📌 <b>Dica de prova:</b> guarde a sequência 1808 → 1815 → 1821 → 9/1/1822 (Fico) → 7/9/1822 (Independência) → 1824 (Constituição) → 1831 (abdicação).',
+  pegadinha:'⚠️ <b>Pegadinha clássica:</b> o <u>primeiro</u> acontecimento do processo de Independência foi a <b>vinda da Corte e a abertura dos portos (1808)</b> — e <u>não</u> a elevação a Reino Unido (1815), que veio depois.',
+  perguntas:[
+    { enun:'Qual foi o PRIMEIRO acontecimento do processo de Independência do Brasil?',
+      alts:['A elevação do Brasil a Reino Unido de Portugal, em 1815','O Dia do Fico, em janeiro de 1822','A transferência da Corte portuguesa e a abertura dos portos, em 1808','A criação da Constituição, em 1824'],
+      certa:2,
+      exp:'Tudo começa em 1808. A elevação a Reino Unido só veio sete anos depois, em 1815.' },
+    { enun:'O que significou a abertura dos portos assinada por Dom João VI?',
+      alts:['O início da liberdade econômica do Brasil','O fim imediato da escravidão','A volta do Brasil à condição de colônia','A transferência da capital para Salvador'],
+      certa:0,
+      exp:'Com os portos abertos, o Brasil podia comerciar com outras nações, e não apenas com Portugal.' },
+    { enun:'O Dia do Fico aconteceu porque:',
+      alts:['Dom Pedro foi obrigado por tropas portuguesas a permanecer no Brasil','Dom João VI decidiu não voltar para Portugal','A Independência foi proclamada nesse dia','Dom Pedro recebeu um abaixo-assinado e declarou que ficaria no Brasil'],
+      certa:3,
+      exp:'Foram cerca de 8 mil assinaturas pedindo que ele ficasse. Em 9 de janeiro de 1822 ele respondeu: "digam ao povo que fico".' }
+  ]
+},
+{
+  emoji:'🏙️', titulo:'Peça 7 — O dia a dia nas cidades do Império',
+  texto:[
+    'A descoberta de ouro nas Minas Gerais, no século XVIII, transformou a cidade do <b>Rio de Janeiro</b> no <b>porto oficial de exportação</b> dessas riquezas. Pela sua importância, em <b>1763</b> o Rio virou a <b>capital da Colônia</b>.',
+    'Em <b>1808</b>, com a chegada da Corte e de toda a administração, a cidade ganhou muitas atividades econômicas urbanas, como o comércio e o artesanato. E com a Independência, em <b>1822</b>, o Rio de Janeiro se tornou a <b>capital do Império</b>.',
+    'Com tantas mudanças, a população urbana <b>cresceu muito rápido</b>. Só que o Rio — como os outros grandes centros do Império — <b>não tinha serviços de infraestrutura</b>, como saneamento básico. Não havia rede de esgoto nem água encanada nas casas.',
+    'Para dar conta disso, usava-se o trabalho dos <b>escravizados de ganho</b>: pessoas escravizadas que eram <b>alugadas por seus donos</b> para exercer atividades urbanas. A população os chamava de <b>"tigres"</b>. O apelido comparava essas pessoas a animais ferozes que deviam ser evitados no caminho, porque elas carregavam <b>barris com os dejetos e o lixo</b> das casas para despejar nos rios, no mar e até nas ruas.',
+    'As ruas viraram, então, o lugar de despejo do lixo e do esgoto. O problema era tão sério que as <b>Câmaras Municipais</b> criavam leis para reduzir essa prática, que já durava séculos. Mesmo assim, a situação chegou a provocar <b>epidemias</b> — doenças que atingiam grande parte da população. A solução foi investir na <b>lavagem das vias públicas</b>, às vezes com a ajuda dos próprios moradores.',
+    'Como não havia água encanada, foram construídos <b>chafarizes</b> com água potável. Ali, pessoas escravizadas enchiam barris e levavam a água até as casas, e era comum a presença de mulheres que trabalhavam como <b>lavadeiras</b>.',
+    'Quem retratou essas cenas foi o artista <b>Henrique Fleiuss</b> (1823–1882), pintor de aquarela, caricaturista, chargista e desenhista <b>nascido na Alemanha</b>. Ele se mudou para o Brasil em <b>1859</b> e fundou uma oficina de tipografia que, em <b>1863</b>, por decreto de Dom Pedro II, virou o <b>Instituto Artístico Imperial</b>. Suas caricaturas e charges foram as <b>primeiras publicadas na imprensa do Brasil</b>.'
+  ],
+  chaves:[
+    ['1763','Rio de Janeiro vira capital da Colônia (no lugar de Salvador).'],
+    ['1822','Rio de Janeiro vira capital do Império.'],
+    ['Escravizados de ganho','pessoas escravizadas alugadas pelos donos para trabalhos urbanos.'],
+    ['"Tigres"','apelido dado a quem carregava barris de dejetos pelas ruas.'],
+    ['Chafarizes','fontes públicas de água potável, já que não havia água encanada.'],
+    ['Henrique Fleiuss','artista alemão; suas charges foram as primeiras publicadas na imprensa do Brasil.']
+  ],
+  postit:'📌 <b>Dica de prova:</b> a Independência mudou o <b>governo</b>, mas não mudou o <b>dia a dia</b> das pessoas pobres e escravizadas. Essa é a grande conclusão da unidade.',
+  pegadinha:'⚠️ <b>Pegadinha:</b> "tigres" <u>não</u> eram animais! Era o apelido cruel dado às pessoas escravizadas que carregavam os barris de dejetos.',
+  perguntas:[
+    { enun:'Quem eram os escravizados chamados de "tigres"?',
+      alts:['Soldados que protegiam o imperador','Pessoas escravizadas que carregavam barris com dejetos e lixo pelas ruas','Bandeirantes que caçavam animais no sertão','Comerciantes que vendiam água nos chafarizes'],
+      certa:1,
+      exp:'O apelido vinha da comparação com animais ferozes que deviam ser evitados no caminho, por causa do cheiro e do risco dos barris.' },
+    { enun:'Por que foram construídos chafarizes nas cidades do Império?',
+      alts:['Para enfeitar as praças da cidade','Para servir de ponto de encontro dos comerciantes','Porque as casas não tinham água encanada','Para lavar as roupas do imperador'],
+      certa:2,
+      exp:'Sem água encanada, o chafariz era a fonte pública. De lá a água era levada em barris até as residências.' },
+    { enun:'Em que ano o Rio de Janeiro se tornou capital da Colônia?',
+      alts:['1549','1763','1808','1822'],
+      certa:1,
+      exp:'1763. Em 1549 foi fundada Salvador (1ª capital); em 1808 chegou a Corte; em 1822 o Rio virou capital do Império.' }
+  ]
+}
+];
+
+var REVISAO = [
+  { enun:'Coloque em ordem cronológica: qual destes acontecimentos veio POR ÚLTIMO?',
+    alts:['A Conjuração Mineira (1788–1789)','A abdicação de Dom Pedro I (1831)','A Conjuração Baiana (1798)','A Independência do Brasil (1822)'],
+    certa:1,
+    exp:'A ordem é: Conjuração Mineira (1789) → Conjuração Baiana (1798) → Independência (1822) → abdicação de Dom Pedro I (1831).' },
+  { enun:'O que a Conjuração Baiana tinha que a Conjuração Mineira NÃO tinha?',
+    alts:['O desejo de transformar a capitania em uma república','A proposta de acabar com a escravidão','A insatisfação com os impostos cobrados por Portugal','A repressão violenta por parte da Coroa portuguesa'],
+    certa:1,
+    exp:'As duas queriam república, reclamavam de impostos e foram reprimidas. Só a Baiana propôs o fim da escravidão.' },
+  { enun:'Depois da Independência, o Brasil virou um Estado. Isso significa que:',
+    alts:['Todos os brasileiros passaram a ser livres e iguais','A escravidão foi abolida imediatamente','As cidades ganharam saneamento básico e água encanada','O país passou a ter território, população e governo próprios, com leis próprias'],
+    certa:3,
+    exp:'Estado = território + população + governo próprios. A escravidão continuou, e as cidades seguiram sem infraestrutura.' }
+];
+
+/* ================= ESTADO ================= */
+var respostas = {};
+var TOTAL = 24; /* 21 dos blocos + 3 da revisão */
+
+function carregar(){
+  var bruto = lerDado(CHAVE);
+  if(bruto){
+    try {
+      var d = JSON.parse(bruto);
+      respostas = d.respostas || {};
+      if(d.quando) document.getElementById('dataSalvo').textContent = 'Último salvamento: ' + d.quando;
+    } catch(e){ respostas = {}; }
+  }
+}
+function salvar(){
+  var agora = new Date().toLocaleString('pt-BR');
+  salvarDado(CHAVE, JSON.stringify({ respostas: respostas, quando: agora }));
+  document.getElementById('dataSalvo').textContent = 'Último salvamento: ' + agora;
+}
+
+/* ================= RENDERIZAÇÃO ================= */
+function montarPergunta(id, q){
+  var div = document.createElement('div');
+  div.className = 'pergunta';
+  var enun = document.createElement('div');
+  enun.className = 'enun';
+  enun.textContent = q.enun;
+  div.appendChild(enun);
+
+  var botoes = [];
+  q.alts.forEach(function(txt, i){
+    var b = document.createElement('button');
+    b.className = 'alt';
+    b.textContent = String.fromCharCode(65+i) + ') ' + txt;
+    b.onclick = function(){ responder(id, q, i, botoes, fb); };
+    div.appendChild(b);
+    botoes.push(b);
+  });
+
+  var fb = document.createElement('div');
+  fb.className = 'feedback';
+  div.appendChild(fb);
+
+  if(respostas[id] !== undefined){
+    pintar(q, respostas[id], botoes, fb);
+  }
+  return div;
+}
+
+function pintar(q, escolhida, botoes, fb){
+  botoes.forEach(function(b, i){
+    b.disabled = true;
+    if(i === q.certa) b.classList.add('certa');
+    else if(i === escolhida) b.classList.add('errada');
+  });
+  fb.classList.add('mostra');
+  if(escolhida === q.certa){
+    fb.className = 'feedback mostra bom';
+    fb.innerHTML = '⭐ <b>Boa, aprendiz!</b> ' + q.exp;
+  } else {
+    fb.className = 'feedback mostra ops';
+    fb.innerHTML = '🔧 <b>Quase!</b> A resposta certa é a letra <b>' +
+      String.fromCharCode(65+q.certa) + '</b>. ' + q.exp;
+  }
+}
+
+function responder(id, q, escolhida, botoes, fb){
+  if(respostas[id] !== undefined) return;
+  respostas[id] = escolhida;
+  pintar(q, escolhida, botoes, fb);
+  salvar();
+  atualizarPlacar();
+}
+
+function atualizarPlacar(){
+  var feitas = 0, acertos = 0;
+  BLOCOS.forEach(function(bl, bi){
+    bl.perguntas.forEach(function(q, qi){
+      var id = 'b'+bi+'q'+qi;
+      if(respostas[id] !== undefined){ feitas++; if(respostas[id] === q.certa) acertos++; }
+    });
+  });
+  REVISAO.forEach(function(q, qi){
+    var id = 'rev'+qi;
+    if(respostas[id] !== undefined){ feitas++; if(respostas[id] === q.certa) acertos++; }
+  });
+  document.getElementById('pProg').textContent = feitas;
+  document.getElementById('pEstrelas').textContent = '⭐ ' + acertos;
+  document.getElementById('pBarra').style.width = (feitas/TOTAL*100) + '%';
+}
+
+function montarTudo(){
+  var cx = document.getElementById('blocos');
+  BLOCOS.forEach(function(bl, bi){
+    var art = document.createElement('div');
+    art.className = 'bloco cores' + (bi+1);
+
+    var cab = document.createElement('div');
+    cab.className = 'cab';
+    cab.innerHTML = '<span class="emoji">'+bl.emoji+'</span><h2>'+bl.titulo+'</h2><span class="seta">▶</span>';
+    cab.onclick = function(){ art.classList.toggle('aberto'); };
+    art.appendChild(cab);
+
+    var corpo = document.createElement('div');
+    corpo.className = 'corpo';
+
+    bl.texto.forEach(function(p){
+      var el = document.createElement('p');
+      el.innerHTML = p;
+      corpo.appendChild(el);
+    });
+
+    var cx2 = document.createElement('div');
+    cx2.className = 'caixa-chave';
+    var h3 = document.createElement('h3');
+    h3.textContent = '🧰 Caixa de ferramentas — palavras que caem na prova';
+    cx2.appendChild(h3);
+    var ul = document.createElement('ul');
+    bl.chaves.forEach(function(par){
+      var li = document.createElement('li');
+      li.innerHTML = '<b>' + par[0] + ':</b> ' + par[1];
+      ul.appendChild(li);
+    });
+    cx2.appendChild(ul);
+    corpo.appendChild(cx2);
+
+    var pn = document.createElement('div');
+    pn.className = 'postit';
+    pn.innerHTML = bl.postit;
+    corpo.appendChild(pn);
+
+    var pg = document.createElement('div');
+    pg.className = 'pegadinha';
+    pg.innerHTML = bl.pegadinha;
+    corpo.appendChild(pg);
+
+    var titp = document.createElement('p');
+    titp.innerHTML = '<span class="ok">✋ Pare e pense — responda às 3 perguntas</span>';
+    corpo.appendChild(titp);
+
+    bl.perguntas.forEach(function(q, qi){
+      corpo.appendChild(montarPergunta('b'+bi+'q'+qi, q));
+    });
+
+    art.appendChild(corpo);
+    cx.appendChild(art);
+  });
+
+  var rev = document.getElementById('revisaoPerguntas');
+  REVISAO.forEach(function(q, qi){
+    rev.appendChild(montarPergunta('rev'+qi, q));
+  });
+}
+
+/* ================= EXPORTAR / IMPORTAR / ZERAR ================= */
+function exportar(){
+  var dados = JSON.stringify({ respostas: respostas, quando: new Date().toLocaleString('pt-BR') }, null, 2);
+  var blob = new Blob([dados], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'leitura_guiada_historia_5ano.json';
+  a.click();
+  abrirModal('Pronto! 📥','Arquivo salvo no seu computador. Guarde-o para restaurar suas respostas depois.',[{texto:'Fechar'}]);
+}
+function importar(ev){
+  var f = ev.target.files[0];
+  if(!f) return;
+  var leitor = new FileReader();
+  leitor.onload = function(e){
+    try{
+      var d = JSON.parse(e.target.result);
+      respostas = d.respostas || {};
+      salvar();
+      abrirModal('Respostas restauradas! 📤','Vou recarregar a página para mostrar tudo no lugar.',
+        [{texto:'Ok', acao:function(){ location.reload(); }}]);
+    } catch(err){
+      abrirModal('Ops!','Não consegui ler esse arquivo. Verifique se é o arquivo exportado por esta página.',[{texto:'Fechar'}]);
+    }
+  };
+  leitor.readAsText(f);
+}
+function pedirZerar(){
+  abrirModal('Zerar tudo?','Todas as suas respostas desta Leitura Guiada serão apagadas. Quer mesmo?',
+    [{texto:'Sim, zerar', acao:function(){ apagarDado(CHAVE); respostas={}; location.reload(); }},
+     {texto:'Cancelar', cinza:true}]);
+}
+
+/* ================= INÍCIO ================= */
+carregar();
+montarTudo();
+atualizarPlacar();
+document.querySelector('.bloco').classList.add('aberto');
+</script>
+</body>
+</html>

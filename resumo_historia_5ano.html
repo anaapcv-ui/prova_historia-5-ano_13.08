@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🗺️ Resumo — Oficina da Nação | História 5º ano (Unidade 6)</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Comic Sans MS','Segoe UI',system-ui,sans-serif;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,.35) 0 2px, transparent 2px 46px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.35) 0 2px, transparent 2px 46px),
+      linear-gradient(160deg,#166534 0%,#15803d 45%,#b45309 100%);
+    min-height:100vh;color:#1c1917;padding:16px 14px 60px;
+  }
+  .wrap{max-width:900px;margin:0 auto;}
+
+  .abas{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;}
+  .abas a{
+    text-decoration:none;background:#fffbeb;color:#78350f;font-weight:bold;
+    padding:9px 14px;border-radius:14px;font-size:.95em;border:3px solid #d97706;
+    box-shadow:0 4px 0 #92400e;
+  }
+  .abas a.ativa{background:#fbbf24;color:#451a03;}
+
+  .hero{
+    background:#fffbeb;border-radius:26px;padding:22px;text-align:center;
+    box-shadow:0 12px 34px rgba(0,0,0,.3);margin-bottom:18px;border:5px solid #d97706;
+  }
+  .hero .tools{font-size:26px;letter-spacing:8px;}
+  .hero h1{font-size:1.6em;color:#166534;margin:8px 0 4px;}
+  .hero .sub{color:#78350f;}
+  .mascote{
+    background:#ecfdf5;border:3px dashed #15803d;border-radius:18px;
+    padding:12px 14px;margin-top:14px;color:#14532d;text-align:left;
+  }
+
+  .secao{
+    background:#fffbeb;border-radius:24px;padding:22px;margin-bottom:18px;
+    box-shadow:0 8px 24px rgba(0,0,0,.22);border-top:10px solid #d97706;
+  }
+  .secao h2{color:#166534;font-size:1.35em;margin-bottom:14px;text-align:center;}
+
+  /* ===== LINHA DO TEMPO ===== */
+  .linha-tempo{position:relative;padding-left:34px;margin-top:8px;}
+  .linha-tempo::before{
+    content:'';position:absolute;left:12px;top:6px;bottom:6px;width:6px;
+    background:linear-gradient(#16a34a,#d97706);border-radius:6px;
+  }
+  .marco{position:relative;margin-bottom:16px;}
+  .marco::before{
+    content:'';position:absolute;left:-28px;top:8px;width:20px;height:20px;
+    background:#fbbf24;border:4px solid #78350f;border-radius:50%;
+  }
+  .marco .ano{
+    display:inline-block;background:#166534;color:#fff;border-radius:20px;
+    padding:4px 14px;font-weight:bold;font-size:.95em;margin-bottom:6px;
+  }
+  .marco .fato{background:#fff;border-radius:14px;padding:11px 14px;border:2px solid #e7e5e4;line-height:1.55;}
+  .marco .fato b{color:#b45309;}
+
+  /* ===== GRADE DE PALAVRAS ===== */
+  .grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;}
+  .palavra{
+    background:#fff;border-radius:16px;padding:14px;border-left:8px solid #16a34a;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+  }
+  .palavra h3{color:#166534;font-size:1.05em;margin-bottom:5px;}
+  .palavra p{font-size:.97em;line-height:1.5;color:#44403c;}
+
+  /* ===== COMPARAÇÃO ===== */
+  .tabela{width:100%;border-collapse:collapse;margin-top:8px;font-size:.97em;}
+  .tabela th{background:#166534;color:#fff;padding:10px;text-align:left;}
+  .tabela th:first-child{border-radius:12px 0 0 0;}
+  .tabela th:last-child{border-radius:0 12px 0 0;}
+  .tabela td{background:#fff;padding:10px;border-bottom:2px solid #f5f5f4;line-height:1.5;vertical-align:top;}
+  .tabela tr td:first-child{font-weight:bold;color:#78350f;background:#fef3c7;}
+
+  /* ===== POST-ITS ===== */
+  .postits{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;}
+  .postit{
+    background:#fef08a;border-radius:6px;padding:14px;color:#713f12;line-height:1.55;
+    box-shadow:3px 3px 10px rgba(0,0,0,.18);font-size:.98em;
+  }
+  .postit:nth-child(even){transform:rotate(.8deg);background:#fde68a;}
+  .postit:nth-child(odd){transform:rotate(-.8deg);}
+  .postit b{color:#92400e;}
+
+  /* ===== MINI-QUIZ RELÂMPAGO ===== */
+  .relampago{
+    background:#fff;border:3px dashed #d97706;border-radius:16px;padding:14px 16px;margin-bottom:10px;
+    cursor:pointer;transition:.15s;
+  }
+  .relampago:hover{background:#fef3c7;}
+  .relampago .perg{font-weight:bold;color:#292524;line-height:1.5;}
+  .relampago .resp{
+    display:none;margin-top:10px;background:#dcfce7;color:#14532d;border-radius:12px;
+    padding:10px 12px;line-height:1.55;
+  }
+  .relampago.aberto .resp{display:block;}
+  .relampago .toque{font-size:.85em;color:#a16207;margin-top:6px;}
+  .relampago.aberto .toque{display:none;}
+
+  .botao-grande{
+    display:block;text-align:center;background:#16a34a;color:#fff;text-decoration:none;
+    font-weight:bold;padding:18px;border-radius:20px;margin-top:16px;font-size:1.15em;
+    border:4px solid #14532d;box-shadow:0 6px 0 #14532d;
+  }
+  .botao-grande:hover{transform:translateY(-2px);}
+
+  .salvar{background:#1c1917;color:#fef3c7;border-radius:20px;padding:16px 18px;margin-top:22px;}
+  .salvar h3{font-size:1.05em;margin-bottom:8px;}
+  .salvar .data{font-size:.88em;opacity:.85;margin-bottom:10px;}
+  .salvar button{
+    background:#fbbf24;color:#451a03;border:none;border-radius:12px;padding:9px 14px;margin:4px 4px 0 0;
+    font-family:inherit;font-weight:bold;cursor:pointer;font-size:.94em;
+  }
+  .salvar .aviso{font-size:.85em;margin-top:10px;opacity:.8;}
+
+  .modal-fundo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:20px;}
+  .modal-fundo.abre{display:flex;}
+  .modal{background:#fffbeb;border-radius:22px;padding:22px;max-width:420px;width:100%;border:5px solid #d97706;text-align:center;}
+  .modal h3{color:#78350f;margin-bottom:10px;}
+  .modal p{margin-bottom:16px;line-height:1.5;}
+  .modal button{background:#16a34a;color:#fff;border:none;border-radius:12px;padding:10px 18px;font-family:inherit;font-weight:bold;cursor:pointer;margin:0 5px;}
+  .modal button.cinza{background:#78716c;}
+
+  .proximo{
+    display:block;text-align:center;background:#fbbf24;color:#451a03;text-decoration:none;
+    font-weight:bold;padding:16px;border-radius:20px;margin-top:22px;font-size:1.1em;
+    border:4px solid #d97706;box-shadow:0 6px 0 #92400e;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="abas">
+    <a href="index.html">🏠 Início</a>
+    <a href="leitura_guiada_historia_5ano.html">📖 Leitura Guiada</a>
+    <a href="jogo_vf_historia_5ano.html">🎯 Quiz V ou F</a>
+    <a href="resumo_historia_5ano.html" class="ativa">🗺️ Resumo</a>
+    <a href="simulado_historia_5ano.html">📝 Simulado</a>
+  </nav>
+
+  <div class="hero">
+    <div class="tools">🗺️ 📐 🧱 🔨 ⚒️</div>
+    <h1>Resumo: a planta da obra</h1>
+    <div class="sub">História, 5º ano · Unidade 6: A construção de uma nação</div>
+    <div class="mascote">
+      🦉 <b>Mestre Coruja recomenda:</b> esta é a <b>planta da obra</b> — tudo o que você
+      construiu, num lugar só. Use na véspera da prova. Comece pela linha do tempo, depois
+      leia as palavras da caixa de ferramentas e termine no quiz relâmpago (é só clicar para
+      ver a resposta).
+    </div>
+  </div>
+
+  <!-- LINHA DO TEMPO -->
+  <div class="secao">
+    <h2>⏳ Linha do tempo da obra</h2>
+    <div class="linha-tempo">
+      <div class="marco">
+        <div class="ano">1500</div>
+        <div class="fato">Chegada dos portugueses. O Brasil vira <b>colônia</b> de Portugal — ainda <b>não</b> é um Estado.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">1534</div>
+        <div class="fato">Fundação da <b>Companhia de Jesus</b>, a ordem dos padres jesuítas.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">1549</div>
+        <div class="fato">Criação do <b>governo-geral</b> · chegada de <b>Tomé de Sousa</b>, o 1º governador-geral · fundação de <b>Salvador</b>, a primeira capital.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">por volta de 1690</div>
+        <div class="fato">Bandeirantes descobrem <b>ouro e diamantes</b> na região da atual Minas Gerais.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">1694</div>
+        <div class="fato">O grupo de <b>Domingos Jorge Velho</b> destrói o <b>Quilombo dos Palmares</b> e mata <b>Zumbi</b>.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">1720</div>
+        <div class="fato">A Coroa cria a <b>capitania das Minas Gerais</b>, a região mais rica e populosa da América portuguesa.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">1763</div>
+        <div class="fato">A capital muda de Salvador para o <b>Rio de Janeiro</b>.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">1788–1789</div>
+        <div class="fato"><b>Conjuração (ou Inconfidência) Mineira</b>, em Vila Rica. Queriam república, universidade e fábricas — mas a maioria queria manter a escravidão.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">21 de abril de 1792</div>
+        <div class="fato">Execução de <b>Tiradentes</b>, no Rio de Janeiro.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">1798</div>
+        <div class="fato"><b>Conjuração Baiana</b> (Revolta dos Búzios / dos Alfaiates), em Salvador. Movimento <b>popular</b> que queria república e o <b>fim da escravidão</b>.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">1799</div>
+        <div class="fato">Os líderes da Conjuração Baiana são presos e condenados à morte.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">1808</div>
+        <div class="fato">Vinda da <b>Corte portuguesa</b> + <b>abertura dos portos</b> por Dom João VI = início da liberdade econômica. Criação do Banco do Brasil, da Biblioteca Real e da Imprensa Régia.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">1815</div>
+        <div class="fato">O Brasil é elevado a <b>Reino Unido de Portugal</b>: deixa de ser colônia; as capitanias viram <b>províncias</b>.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">1821</div>
+        <div class="fato">Dom João VI volta a Portugal e deixa <b>Dom Pedro</b> como <b>príncipe regente</b>.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">9 de janeiro de 1822</div>
+        <div class="fato"><b>Dia do Fico:</b> após um abaixo-assinado com cerca de <b>8 mil assinaturas</b>, Dom Pedro decide ficar.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">7 de setembro de 1822</div>
+        <div class="fato"><b>Independência do Brasil</b>, às margens do <b>riacho do Ipiranga</b>. Dom Pedro é coroado imperador aos <b>24 anos</b>. Nasce o <b>Império do Brasil</b>, com capital no Rio de Janeiro.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">1824</div>
+        <div class="fato"><b>Constituição</b> de Dom Pedro I, com <b>4 poderes</b>: Executivo, Legislativo, Judiciário e <b>Moderador</b>.</div>
+      </div>
+      <div class="marco">
+        <div class="ano">1831</div>
+        <div class="fato">Dom Pedro I <b>abdica</b> em favor do filho, Dom Pedro II.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PALAVRAS-CHAVE -->
+  <div class="secao">
+    <h2>🧰 Caixa de ferramentas — palavras que caem na prova</h2>
+    <div class="grade">
+      <div class="palavra"><h3>Estado</h3><p>País com <b>território, população e governo próprios</b>, que decide sozinho o seu destino (soberania).</p></div>
+      <div class="palavra"><h3>Colônia</h3><p>Terra controlada e organizada por outro país. O Brasil foi colônia de Portugal.</p></div>
+      <div class="palavra"><h3>Governo-geral</h3><p>Criado em 1549 para <b>centralizar</b> a administração da colônia. Chefe: o governador-geral.</p></div>
+      <div class="palavra"><h3>Jesuítas</h3><p>Padres da Companhia de Jesus (1534). Missão: <b>catequizar</b>, ou seja, propagar a fé católica.</p></div>
+      <div class="palavra"><h3>Missões (reduções)</h3><p>Aldeias organizadas pelos jesuítas onde os indígenas trabalhavam na roça, criavam animais e construíam igrejas.</p></div>
+      <div class="palavra"><h3>Bandeirantes</h3><p>Paulistas que entravam no sertão em expedições, carregando bandeiras. Queriam <b>escravizar indígenas</b>, destruir quilombos e achar ouro.</p></div>
+      <div class="palavra"><h3>Quilombo</h3><p>Comunidade formada por pessoas que fugiam da escravidão. O maior foi <b>Palmares</b>, em Alagoas.</p></div>
+      <div class="palavra"><h3>Quinto</h3><p>Imposto de <b>20%</b> sobre todo o ouro e diamante extraído, que ia para a Coroa.</p></div>
+      <div class="palavra"><h3>Derrama</h3><p><b>Invasão das casas</b> por funcionários da Coroa para confiscar bens e cobrar impostos atrasados.</p></div>
+      <div class="palavra"><h3>Casas de fundição</h3><p>Derretiam o ouro e faziam <b>barras com o selo real</b>, para controlar a produção.</p></div>
+      <div class="palavra"><h3>Inconfidência × Conjuração</h3><p><b>Inconfidência</b> = infidelidade (nome dado pela Coroa). <b>Conjuração</b> = aliança.</p></div>
+      <div class="palavra"><h3>Ideias iluministas</h3><p>Vindas da Europa. Defendiam <b>liberdade econômica e política</b> e <b>igualdade</b> entre as pessoas.</p></div>
+      <div class="palavra"><h3>Abertura dos portos</h3><p>Decreto de Dom João VI, em 1808. Início da <b>liberdade econômica</b> do Brasil.</p></div>
+      <div class="palavra"><h3>Dia do Fico</h3><p>9 de janeiro de 1822. Dom Pedro anuncia que fica no Brasil: <i>"digam ao povo que fico"</i>.</p></div>
+      <div class="palavra"><h3>Província</h3><p>Novo nome das capitanias, a partir de 1815, quando o Brasil virou Reino Unido de Portugal.</p></div>
+      <div class="palavra"><h3>Escravizados de ganho ("tigres")</h3><p>Pessoas escravizadas <b>alugadas</b> pelos donos para trabalhos urbanos. Carregavam barris com dejetos pelas ruas.</p></div>
+      <div class="palavra"><h3>Chafariz</h3><p>Fonte pública de água potável, já que as casas não tinham água encanada.</p></div>
+      <div class="palavra"><h3>Poder Moderador</h3><p>Quarto poder da Constituição de 1824. <b>Não existe mais</b> hoje.</p></div>
+    </div>
+  </div>
+
+  <!-- COMPARAÇÃO -->
+  <div class="secao">
+    <h2>⚖️ As duas conjurações lado a lado</h2>
+    <p style="text-align:center;margin-bottom:12px;">Esta comparação é <b>quase certa</b> na prova. Estude as diferenças!</p>
+    <table class="tabela">
+      <tr><th>&nbsp;</th><th>Conjuração Mineira</th><th>Conjuração Baiana</th></tr>
+      <tr><td>Quando</td><td>1788–1789</td><td>1798</td></tr>
+      <tr><td>Onde</td><td>Vila Rica, capitania das Minas Gerais</td><td>Salvador, capitania da Bahia</td></tr>
+      <tr><td>Quem participou</td><td>A <b>elite colonial</b>: fazendeiros, grandes comerciantes, intelectuais, militares e padres</td><td><b>Movimento popular</b>: elite local, comerciantes, alfaiates, soldados, artesãos e pessoas escravizadas</td></tr>
+      <tr><td>O que queriam</td><td>República · universidade · fábricas</td><td>República · salários maiores para soldados · <b>fim da escravidão</b> · liberdade de comércio</td></tr>
+      <tr><td>Escravidão</td><td>A <b>maioria queria manter</b></td><td>Queriam <b>acabar</b> com ela</td></tr>
+      <tr><td>Como espalhavam as ideias</td><td>Reuniões secretas entre os membros</td><td><b>Panfletos</b> colados em portas de igrejas e casas</td></tr>
+      <tr><td>Outros nomes</td><td>Inconfidência Mineira</td><td>Revolta dos Búzios · Revolta dos Alfaiates</td></tr>
+      <tr><td>Como terminou</td><td>Delatados e presos. <b>Tiradentes</b> executado em 21/04/1792</td><td>Repressão rápida e violenta. Líderes condenados à morte em <b>1799</b></td></tr>
+    </table>
+  </div>
+
+  <!-- DICAS DE PROVA -->
+  <div class="secao">
+    <h2>📌 Post-its de prova</h2>
+    <div class="postits">
+      <div class="postit"><b>O trio mágico:</b> TERRITÓRIO + POPULAÇÃO + GOVERNO PRÓPRIO = Estado. Se cair "o que é um Estado?", é isso.</div>
+      <div class="postit"><b>1549 três vezes:</b> governo-geral criado + Tomé de Sousa chega + Salvador fundada. Tudo no mesmo ano!</div>
+      <div class="postit"><b>Quinto × Derrama:</b> QUINTO = imposto de 20%. DERRAMA = invadir casas para cobrar atrasados. Não troque!</div>
+      <div class="postit"><b>Padres × Paulistas:</b> jesuítas queriam CATEQUIZAR, colonos queriam ESCRAVIZAR. Interesses DIFERENTES.</div>
+      <div class="postit"><b>Sequência da Independência:</b> 1808 → 1815 → 1821 → 9/1/1822 (Fico) → 7/9/1822 → 1824 → 1831.</div>
+      <div class="postit"><b>O erro clássico:</b> o processo de Independência começou com a ABERTURA DOS PORTOS (1808), e não com o Reino Unido (1815).</div>
+      <div class="postit"><b>Números para decorar:</b> 20% (quinto) · 8 mil assinaturas (Fico) · 24 anos (idade de Dom Pedro) · 40 mil habitantes (Salvador) · 20 mil pessoas (Palmares).</div>
+      <div class="postit"><b>A grande conclusão:</b> a Independência mudou o GOVERNO, mas não mudou a vida dos pobres nem acabou com a escravidão.</div>
+      <div class="postit"><b>Capitais na ordem:</b> Salvador (1549–1763) → Rio de Janeiro (1763 em diante).</div>
+    </div>
+  </div>
+
+  <!-- MINI-QUIZ RELÂMPAGO -->
+  <div class="secao">
+    <h2>⚡ Quiz relâmpago — clique para ver a resposta</h2>
+    <div id="relampagos"></div>
+  </div>
+
+  <a class="botao-grande" href="jogo_vf_historia_5ano.html">🎯 Quero jogar Verdadeiro ou Falso!</a>
+
+  <div class="salvar">
+    <h3>💾 As perguntas que você já abriu ficam guardadas</h3>
+    <div class="data" id="dataSalvo">Ainda não salvo nesta sessão.</div>
+    <button onclick="exportar()">📥 Exportar</button>
+    <button onclick="document.getElementById('arqImp').click()">📤 Importar</button>
+    <button onclick="pedirZerar()">🗑️ Zerar tudo</button>
+    <input type="file" id="arqImp" accept=".json" style="display:none" onchange="importar(event)">
+    <div class="aviso">Assim você sabe de onde continuar quando voltar.</div>
+  </div>
+
+  <a class="proximo" href="simulado_historia_5ano.html">➡️ Próximo material: 📝 Simulado</a>
+</div>
+
+<div class="modal-fundo" id="modalFundo">
+  <div class="modal">
+    <h3 id="modalTit">Atenção</h3>
+    <p id="modalMsg"></p>
+    <div id="modalBotoes"></div>
+  </div>
+</div>
+
+<script>
+var memoria = {};
+function salvarDado(c,v){ try{ localStorage.setItem(c,v);}catch(e){ memoria[c]=v; } }
+function lerDado(c){ try{ var v=localStorage.getItem(c); return v!==null?v:(memoria[c]||null);}catch(e){ return memoria[c]||null; } }
+function apagarDado(c){ try{ localStorage.removeItem(c);}catch(e){} delete memoria[c]; }
+var CHAVE = 'oficinaNacao_resumo_v1';
+
+function abrirModal(t,m,bs){
+  document.getElementById('modalTit').textContent=t;
+  document.getElementById('modalMsg').textContent=m;
+  var cx=document.getElementById('modalBotoes'); cx.innerHTML='';
+  bs.forEach(function(b){
+    var bt=document.createElement('button'); bt.textContent=b.texto;
+    if(b.cinza) bt.className='cinza';
+    bt.onclick=function(){ fecharModal(); if(b.acao) b.acao(); };
+    cx.appendChild(bt);
+  });
+  document.getElementById('modalFundo').classList.add('abre');
+}
+function fecharModal(){ document.getElementById('modalFundo').classList.remove('abre'); }
+
+var RELAMPAGO = [
+  ['O que um país precisa ter para ser um Estado?','Território, população e governo próprios (com soberania).'],
+  ['Em que ano foi criado o governo-geral e quem foi o primeiro governador-geral?','Em 1549. O primeiro foi Tomé de Sousa (1549–1553).'],
+  ['Qual foi a primeira capital do Brasil e quando a capital mudou?','Salvador, fundada em 1549. Em 1763 a capital passou a ser o Rio de Janeiro.'],
+  ['Quais eram as três atividades dos bandeirantes?','Aprisionar indígenas para escravizar, destruir quilombos e procurar pedras e metais preciosos.'],
+  ['Por que jesuítas e colonos paulistas entraram em conflito?','Porque tinham interesses diferentes pelos indígenas: os padres queriam catequizá-los; os colonos queriam escravizá-los.'],
+  ['O que era o quinto?','Um imposto de 20% sobre todo o ouro e diamante extraído, que ia para a Coroa portuguesa.'],
+  ['O que era a derrama?','A invasão das casas por funcionários da Coroa para confiscar bens e cobrar os impostos atrasados.'],
+  ['O que a Conjuração Mineira queria fazer com Minas Gerais?','Transformar a capitania em uma república, criar uma universidade e instalar fábricas.'],
+  ['Por que a Coroa chamou o movimento mineiro de "Inconfidência"?','Porque "inconfidência" significa infidelidade — ou seja, traição ao rei.'],
+  ['Quando e onde Tiradentes foi executado?','Em 21 de abril de 1792, na cidade do Rio de Janeiro.'],
+  ['Quais eram os objetivos da Conjuração Baiana?','Transformar a capitania em república, aumentar o salário dos soldados, acabar com a escravidão e ter liberdade de comércio exterior.'],
+  ['Por que a Conjuração Baiana é chamada de Revolta dos Búzios?','Por causa das pulseiras com búzios (conchas) que os revoltosos usavam para se identificar.'],
+  ['Qual foi o primeiro acontecimento do processo de Independência?','A transferência da Corte portuguesa para o Brasil e a abertura dos portos, em 1808.'],
+  ['O que mudou quando o Brasil virou Reino Unido de Portugal, em 1815?','O Brasil deixou de ser colônia e as capitanias passaram a se chamar províncias.'],
+  ['O que foi o Dia do Fico?','Em 9 de janeiro de 1822, após um abaixo-assinado com cerca de 8 mil assinaturas, Dom Pedro anunciou que ficaria no Brasil.'],
+  ['Onde e quando a Independência foi declarada?','Em 7 de setembro de 1822, às margens do riacho do Ipiranga, em São Paulo.'],
+  ['Quantos poderes tinha a Constituição de 1824?','Quatro: Executivo, Legislativo, Judiciário e Moderador.'],
+  ['A Independência acabou com a escravidão?','Não. A escravidão continuou sendo a base do trabalho no Brasil durante todo o século XIX.'],
+  ['Quem eram os escravizados chamados de "tigres"?','Pessoas escravizadas alugadas por seus donos que carregavam barris com dejetos e lixo pelas ruas.'],
+  ['Por que havia chafarizes nas cidades do Império?','Porque as casas não tinham água encanada; a água era levada dali em barris.']
+];
+
+var abertas = {};
+
+function carregar(){
+  var b = lerDado(CHAVE);
+  if(b){
+    try{
+      var d = JSON.parse(b);
+      abertas = d.abertas || {};
+      if(d.quando) document.getElementById('dataSalvo').textContent = 'Último salvamento: ' + d.quando;
+    }catch(e){}
+  }
+}
+function salvar(){
+  var agora = new Date().toLocaleString('pt-BR');
+  salvarDado(CHAVE, JSON.stringify({abertas:abertas, quando:agora}));
+  document.getElementById('dataSalvo').textContent = 'Último salvamento: ' + agora;
+}
+
+function montar(){
+  var cx = document.getElementById('relampagos');
+  RELAMPAGO.forEach(function(par, i){
+    var d = document.createElement('div');
+    d.className = 'relampago';
+    var p = document.createElement('div');
+    p.className = 'perg'; p.textContent = (i+1) + '. ' + par[0];
+    var t = document.createElement('div');
+    t.className = 'toque'; t.textContent = '👆 clique para ver a resposta';
+    var r = document.createElement('div');
+    r.className = 'resp'; r.innerHTML = '✅ ' + par[1];
+    d.appendChild(p); d.appendChild(t); d.appendChild(r);
+    if(abertas[i]) d.classList.add('aberto');
+    d.onclick = function(){
+      d.classList.toggle('aberto');
+      abertas[i] = d.classList.contains('aberto');
+      salvar();
+    };
+    cx.appendChild(d);
+  });
+}
+
+function exportar(){
+  var dados = JSON.stringify({abertas:abertas, quando:new Date().toLocaleString('pt-BR')}, null, 2);
+  var blob = new Blob([dados], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'resumo_historia_5ano.json';
+  a.click();
+  abrirModal('Pronto! 📥','Arquivo salvo no seu computador.',[{texto:'Fechar'}]);
+}
+function importar(ev){
+  var f = ev.target.files[0]; if(!f) return;
+  var leitor = new FileReader();
+  leitor.onload = function(e){
+    try{
+      var d = JSON.parse(e.target.result);
+      abertas = d.abertas || {};
+      salvar();
+      abrirModal('Restaurado! 📤','Vou recarregar a página.',[{texto:'Ok', acao:function(){ location.reload(); }}]);
+    }catch(err){ abrirModal('Ops!','Não consegui ler esse arquivo.',[{texto:'Fechar'}]); }
+  };
+  leitor.readAsText(f);
+}
+function pedirZerar(){
+  abrirModal('Zerar tudo?','As perguntas do quiz relâmpago vão fechar de novo. Quer mesmo?',
+    [{texto:'Sim, zerar', acao:function(){ apagarDado(CHAVE); abertas={}; location.reload(); }},
+     {texto:'Cancelar', cinza:true}]);
+}
+
+carregar();
+montar();
+</script>
+</body>
+</html>

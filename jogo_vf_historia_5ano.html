@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎯 Quiz Verdadeiro ou Falso — Oficina da Nação | História 5º ano (Unidade 6)</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Comic Sans MS','Segoe UI',system-ui,sans-serif;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,.35) 0 2px, transparent 2px 46px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.35) 0 2px, transparent 2px 46px),
+      linear-gradient(160deg,#166534 0%,#15803d 45%,#b45309 100%);
+    min-height:100vh;color:#1c1917;padding:16px 14px 60px;
+  }
+  .wrap{max-width:820px;margin:0 auto;}
+
+  .abas{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;}
+  .abas a{
+    text-decoration:none;background:#fffbeb;color:#78350f;font-weight:bold;
+    padding:9px 14px;border-radius:14px;font-size:.95em;border:3px solid #d97706;
+    box-shadow:0 4px 0 #92400e;
+  }
+  .abas a.ativa{background:#fbbf24;color:#451a03;}
+
+  .hero{
+    background:#fffbeb;border-radius:26px;padding:22px;text-align:center;
+    box-shadow:0 12px 34px rgba(0,0,0,.3);margin-bottom:18px;border:5px solid #d97706;
+  }
+  .hero .tools{font-size:26px;letter-spacing:8px;}
+  .hero h1{font-size:1.6em;color:#166534;margin:8px 0 4px;}
+  .hero .sub{color:#78350f;}
+  .mascote{
+    background:#ecfdf5;border:3px dashed #15803d;border-radius:18px;
+    padding:12px 14px;margin-top:14px;color:#14532d;text-align:left;
+  }
+
+  .placar{
+    position:sticky;top:8px;z-index:20;background:#fffbeb;border:4px solid #d97706;
+    border-radius:20px;padding:12px 16px;margin-bottom:18px;box-shadow:0 8px 20px rgba(0,0,0,.28);
+  }
+  .placar .linha{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between;}
+  .placar b{color:#166534;}
+  .barra{height:16px;background:#e7e5e4;border-radius:20px;overflow:hidden;margin-top:8px;border:2px solid #a8a29e;}
+  .barra i{display:block;height:100%;width:0;background:linear-gradient(90deg,#22c55e,#fbbf24);transition:width .4s;}
+
+  .carta{
+    background:#fffbeb;border-radius:22px;padding:20px;margin-bottom:14px;
+    box-shadow:0 8px 22px rgba(0,0,0,.22);border-left:12px solid #d97706;
+  }
+  .carta .num{
+    display:inline-block;background:#166534;color:#fff;border-radius:20px;
+    padding:4px 14px;font-size:.88em;font-weight:bold;margin-bottom:10px;
+  }
+  .carta .frase{font-size:1.1em;line-height:1.6;margin-bottom:14px;}
+  .botoes{display:flex;gap:10px;flex-wrap:wrap;}
+  .btn{
+    flex:1;min-width:130px;border:3px solid #d6d3d1;background:#fff;border-radius:16px;
+    padding:14px;font-family:inherit;font-size:1.08em;font-weight:bold;cursor:pointer;transition:.15s;
+  }
+  .btn.v{color:#166534;} .btn.f{color:#b91c1c;}
+  .btn:hover:not(:disabled){transform:translateY(-2px);border-color:#d97706;background:#fef3c7;}
+  .btn:disabled{cursor:default;opacity:.65;}
+  .btn.escolhida-certa{background:#dcfce7;border-color:#16a34a;opacity:1;}
+  .btn.escolhida-errada{background:#fee2e2;border-color:#dc2626;opacity:1;}
+  .btn.gabarito{border-color:#16a34a;border-style:dashed;opacity:1;}
+
+  .explica{
+    margin-top:12px;padding:12px 14px;border-radius:14px;display:none;line-height:1.55;font-size:.98em;
+  }
+  .explica.mostra{display:block;}
+  .explica.bom{background:#dcfce7;color:#14532d;}
+  .explica.ops{background:#fef3c7;color:#78350f;}
+
+  .resultado{
+    background:#fffbeb;border:5px solid #16a34a;border-radius:24px;padding:24px;text-align:center;
+    box-shadow:0 10px 26px rgba(0,0,0,.25);display:none;
+  }
+  .resultado.mostra{display:block;}
+  .resultado h2{color:#166534;font-size:1.5em;margin-bottom:10px;}
+  .resultado .nota{font-size:2.6em;font-weight:bold;color:#b45309;margin:10px 0;}
+  .resultado .estrelas{font-size:1.9em;letter-spacing:4px;margin:8px 0;}
+  .resultado .msg{margin:12px 0;line-height:1.6;}
+  .resultado button, .resultado a{
+    display:inline-block;background:#16a34a;color:#fff;border:none;border-radius:14px;
+    padding:12px 18px;font-family:inherit;font-weight:bold;cursor:pointer;margin:6px 4px;
+    text-decoration:none;font-size:1em;
+  }
+  .resultado button.amarelo{background:#f59e0b;color:#451a03;}
+
+  .salvar{background:#1c1917;color:#fef3c7;border-radius:20px;padding:16px 18px;margin-top:22px;}
+  .salvar h3{font-size:1.05em;margin-bottom:8px;}
+  .salvar .data{font-size:.88em;opacity:.85;margin-bottom:10px;}
+  .salvar button{
+    background:#fbbf24;color:#451a03;border:none;border-radius:12px;padding:9px 14px;margin:4px 4px 0 0;
+    font-family:inherit;font-weight:bold;cursor:pointer;font-size:.94em;
+  }
+  .salvar .aviso{font-size:.85em;margin-top:10px;opacity:.8;}
+
+  .modal-fundo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:20px;}
+  .modal-fundo.abre{display:flex;}
+  .modal{background:#fffbeb;border-radius:22px;padding:22px;max-width:420px;width:100%;border:5px solid #d97706;text-align:center;}
+  .modal h3{color:#78350f;margin-bottom:10px;}
+  .modal p{margin-bottom:16px;line-height:1.5;}
+  .modal button{background:#16a34a;color:#fff;border:none;border-radius:12px;padding:10px 18px;font-family:inherit;font-weight:bold;cursor:pointer;margin:0 5px;}
+  .modal button.cinza{background:#78716c;}
+
+  .proximo{
+    display:block;text-align:center;background:#fbbf24;color:#451a03;text-decoration:none;
+    font-weight:bold;padding:16px;border-radius:20px;margin-top:22px;font-size:1.1em;
+    border:4px solid #d97706;box-shadow:0 6px 0 #92400e;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="abas">
+    <a href="index.html">🏠 Início</a>
+    <a href="leitura_guiada_historia_5ano.html">📖 Leitura Guiada</a>
+    <a href="jogo_vf_historia_5ano.html" class="ativa">🎯 Quiz V ou F</a>
+    <a href="resumo_historia_5ano.html">🗺️ Resumo</a>
+    <a href="simulado_historia_5ano.html">📝 Simulado</a>
+  </nav>
+
+  <div class="hero">
+    <div class="tools">🎯 🔨 🧱 ⚒️ 🏗️</div>
+    <h1>Quiz: Verdadeiro ou Falso</h1>
+    <div class="sub">História, 5º ano · Unidade 6: A construção de uma nação</div>
+    <div class="mascote">
+      🦉 <b>Mestre Coruja explica a regra:</b> a cada rodada eu sorteio <b>12 placas</b> de um
+      total de <b>48</b>. Leia com atenção e diga se a placa está <b>certa</b> ou <b>errada</b>.
+      Em toda resposta eu explico o porquê — é aí que você aprende de verdade. Pode jogar
+      quantas vezes quiser: as placas mudam!
+    </div>
+  </div>
+
+  <div class="placar">
+    <div class="linha">
+      <span><b>Placa:</b> <span id="pAtual">1</span> de 12</span>
+      <span><b>Acertos:</b> <span id="pAcertos">0</span></span>
+    </div>
+    <div class="barra"><i id="pBarra"></i></div>
+  </div>
+
+  <div id="jogo"></div>
+
+  <div class="resultado" id="resultado">
+    <h2>🏆 Rodada concluída!</h2>
+    <div class="estrelas" id="rEstrelas"></div>
+    <div class="nota" id="rNota"></div>
+    <div class="msg" id="rMsg"></div>
+    <button class="amarelo" onclick="novaRodada()">🔄 Jogar de novo (outras placas)</button>
+    <a href="resumo_historia_5ano.html">🗺️ Ir para o Resumo</a>
+  </div>
+
+  <div class="salvar">
+    <h3>💾 Seu progresso fica guardado</h3>
+    <div class="data" id="dataSalvo">Ainda não salvo nesta sessão.</div>
+    <button onclick="exportar()">📥 Exportar</button>
+    <button onclick="document.getElementById('arqImp').click()">📤 Importar</button>
+    <button onclick="pedirZerar()">🗑️ Zerar tudo</button>
+    <input type="file" id="arqImp" accept=".json" style="display:none" onchange="importar(event)">
+    <div class="aviso">Se você fechar a página no meio da rodada, ela volta de onde parou.</div>
+  </div>
+
+  <a class="proximo" href="resumo_historia_5ano.html">➡️ Próximo material: 🗺️ Resumo</a>
+</div>
+
+<div class="modal-fundo" id="modalFundo">
+  <div class="modal">
+    <h3 id="modalTit">Atenção</h3>
+    <p id="modalMsg"></p>
+    <div id="modalBotoes"></div>
+  </div>
+</div>
+
+<script>
+/* ========== ARMAZENAMENTO SEGURO ========== */
+var memoria = {};
+function salvarDado(c,v){ try{ localStorage.setItem(c,v);}catch(e){ memoria[c]=v; } }
+function lerDado(c){ try{ var v=localStorage.getItem(c); return v!==null?v:(memoria[c]||null);}catch(e){ return memoria[c]||null; } }
+function apagarDado(c){ try{ localStorage.removeItem(c);}catch(e){} delete memoria[c]; }
+var CHAVE = 'oficinaNacao_vf_v1';
+
+/* ========== MODAL ========== */
+function abrirModal(t,m,bs){
+  document.getElementById('modalTit').textContent=t;
+  document.getElementById('modalMsg').textContent=m;
+  var cx=document.getElementById('modalBotoes'); cx.innerHTML='';
+  bs.forEach(function(b){
+    var bt=document.createElement('button'); bt.textContent=b.texto;
+    if(b.cinza) bt.className='cinza';
+    bt.onclick=function(){ fecharModal(); if(b.acao) b.acao(); };
+    cx.appendChild(bt);
+  });
+  document.getElementById('modalFundo').classList.add('abre');
+}
+function fecharModal(){ document.getElementById('modalFundo').classList.remove('abre'); }
+
+/* ========== BANCO DE 24 FRASES ========== */
+var FRASES = [
+ {f:'Para ser um Estado, um país precisa ter território, população e governo próprios.', v:true,
+  e:'É a definição exata do livro. Guarde esse trio — é a resposta de qualquer pergunta sobre Estado.'},
+ {f:'O Brasil se tornou um Estado logo em 1500, com a chegada dos portugueses.', v:false,
+  e:'Em 1500 o Brasil começou a ser COLÔNIA de Portugal. O processo de virar Estado começou em 1808 e ganhou força em 1822.'},
+ {f:'A Constituição de 1824 organizava quatro poderes: Executivo, Legislativo, Judiciário e Moderador.', v:true,
+  e:'O Poder Moderador é o "extra" da época — hoje ele não existe mais. Por isso cai muito na prova.'},
+ {f:'Dom Pedro I abdicou do trono em 1831, em favor de seu filho Dom Pedro II.', v:true,
+  e:'Abdicar significa largar o trono. Ele passou o cargo ao filho mais novo, Dom Pedro II.'},
+ {f:'O governo-geral foi criado em 1549 para centralizar a administração da colônia.', v:true,
+  e:'A colônia era enorme e difícil de controlar. Centralizar = juntar o comando num lugar só.'},
+ {f:'Tomé de Sousa foi o último governador-geral do Brasil.', v:false,
+  e:'Ele foi o PRIMEIRO governador-geral, entre 1549 e 1553. Depois dele vieram vários outros.'},
+ {f:'Salvador, fundada em 1549, foi a primeira capital do Brasil.', v:true,
+  e:'Foi uma das primeiras ações de Tomé de Sousa. Em 1763 a capital passou para o Rio de Janeiro.'},
+ {f:'Os jesuítas eram religiosos da Companhia de Jesus e queriam propagar a fé católica.', v:true,
+  e:'A Companhia de Jesus foi fundada em 1534 e sua missão era espalhar o catolicismo pelo mundo.'},
+ {f:'Nas missões, os jesuítas aprenderam a língua dos indígenas e usaram música e teatro para ensinar religião.', v:true,
+  e:'Era a estratégia deles: falar a língua dos nativos e ensinar com música, teatro e canto.'},
+ {f:'A capitania de São Vicente ficou muito rica com a produção de açúcar.', v:false,
+  e:'Foi o contrário! A distância até os centros de distribuição encarecia o açúcar, e o solo e o clima não favoreciam a cana.'},
+ {f:'Jesuítas e colonos paulistas tinham exatamente o mesmo interesse pelos indígenas.', v:false,
+  e:'Os interesses eram DIFERENTES: os jesuítas queriam catequizar; os colonos queriam escravizar.'},
+ {f:'Os bandeirantes procuravam pedras e metais preciosos, aprisionavam indígenas e destruíam quilombos.', v:true,
+  e:'São exatamente as três atividades listadas no livro. Vale decorar as três juntas.'},
+ {f:'Os bandeirantes ajudaram a expandir o território brasileiro para além do Tratado de Tordesilhas.', v:true,
+  e:'Ao entrar no sertão em busca de riquezas, eles ultrapassaram a linha imaginária do tratado.'},
+ {f:'O Quilombo dos Palmares foi destruído em 1694 pelo grupo de Domingos Jorge Velho.', v:true,
+  e:'Palmares ficava em Alagoas, reuniu mais de 20 mil pessoas e resistiu mais de 100 anos. Seu líder, Zumbi, foi morto.'},
+ {f:'O "quinto" era a invasão das casas pelos funcionários da Coroa para confiscar bens.', v:false,
+  e:'Isso era a DERRAMA. O quinto era o imposto de 20% sobre o ouro e os diamantes extraídos.'},
+ {f:'A capitania das Minas Gerais foi criada em 1720, por causa da importância da região.', v:true,
+  e:'Com o ouro, a região virou a mais populosa e rica da América portuguesa — e ganhou capitania própria.'},
+ {f:'As casas de fundição derretiam o ouro e faziam barras marcadas com o selo real.', v:true,
+  e:'Era a forma de a Coroa controlar quanto ouro saía das minas.'},
+ {f:'A Conjuração Mineira queria acabar com a escravidão em Minas Gerais.', v:false,
+  e:'Os participantes não se entenderam sobre isso: a MAIORIA, dona de terras e de pessoas escravizadas, queria manter a escravidão.'},
+ {f:'Tiradentes foi executado em 21 de abril de 1792, na cidade do Rio de Janeiro.', v:true,
+  e:'Como um dos mais ativos, ele assumiu a responsabilidade pela tentativa de revolta e foi condenado à morte.'},
+ {f:'A Conjuração Baiana teve ampla participação popular e propunha o fim da escravidão.', v:true,
+  e:'Participaram alfaiates, soldados, artesãos, comerciantes e pessoas escravizadas — por isso o caráter popular.'},
+ {f:'A Conjuração Baiana também é chamada de Revolta dos Búzios por causa das pulseiras usadas pelos revoltosos.', v:true,
+  e:'Os búzios (conchas) nas pulseiras serviam para os participantes se reconhecerem.'},
+ {f:'O primeiro acontecimento do processo de Independência foi a elevação do Brasil a Reino Unido de Portugal.', v:false,
+  e:'O primeiro foi a vinda da Corte e a ABERTURA DOS PORTOS, em 1808. A elevação a Reino Unido veio depois, em 1815.'},
+ {f:'No Dia do Fico, em 9 de janeiro de 1822, Dom Pedro anunciou que permaneceria no Brasil.', v:true,
+  e:'Ele recebeu um abaixo-assinado com cerca de 8 mil assinaturas e respondeu: "digam ao povo que fico".'},
+ {f:'Com a Independência, em 1822, a escravidão foi imediatamente abolida no Brasil.', v:false,
+  e:'A escravidão continuou sendo a base do trabalho durante todo o século XIX, inclusive na produção de café.'},
+ {f:'Dom Pedro foi coroado imperador aos 24 anos, e o país passou a se chamar Império do Brasil.', v:true,
+  e:'Ele recebeu o título de Dom Pedro I. "Império" porque quem governava era um imperador.'},
+ {f:'A Independência do Brasil foi declarada às margens do rio Tietê, em São Paulo.', v:false,
+  e:'Foi às margens do RIACHO DO IPIRANGA, também em São Paulo. Cuidado com essa troca de nomes!'},
+ {f:'O Rio de Janeiro se tornou capital da Colônia em 1763 e capital do Império em 1822.', v:true,
+  e:'Antes disso, quem era capital era Salvador, desde 1549.'},
+ {f:'Os escravizados chamados de "tigres" eram guardas que protegiam o imperador.', v:false,
+  e:'"Tigres" era o apelido cruel dado às pessoas escravizadas que carregavam barris com dejetos e lixo pelas ruas.'},
+ {f:'Os chafarizes foram construídos porque as casas não tinham água encanada.', v:true,
+  e:'Nos chafarizes, pessoas escravizadas enchiam barris e levavam a água até as residências.'},
+ {f:'Com a abertura dos portos, em 1808, o Brasil só podia comerciar com Portugal.', v:false,
+  e:'Ao contrário: os portos foram ABERTOS às nações amigas de Portugal. Foi o início da liberdade econômica.'},
+ {f:'Quando o Brasil foi elevado a Reino Unido de Portugal, as capitanias passaram a se chamar províncias.', v:true,
+  e:'Isso aconteceu no período de 1815 a 1822, quando o Brasil deixou de ser colônia.'},
+ {f:'Os revoltosos da Conjuração Mineira conseguiram transformar Minas Gerais em uma república.', v:false,
+  e:'Não conseguiram: o governador foi avisado dos planos e todos foram presos e condenados antes da revolta.'},
+ {f:'Salvador tinha cerca de 40 mil habitantes na época da Conjuração Baiana.', v:true,
+  e:'Era uma das cidades mais importantes, com forte comércio de exportação de açúcar.'},
+ {f:'Os líderes da Conjuração Baiana foram perdoados pela Coroa portuguesa.', v:false,
+  e:'A reação foi rápida e violenta: os principais líderes foram presos e condenados à morte em 1799.'},
+ {f:'João Ramalho era um português rico que se recusou a conviver com os povos indígenas.', v:false,
+  e:'Era um português POBRE que se casou com a filha do cacique Tibiriçá e conviveu com os indígenas.'},
+ {f:'A crise na Bahia começou porque os grandes proprietários preferiram plantar cana em vez de alimentos.', v:true,
+  e:'Com menos alimento sendo plantado, começou a faltar comida e os preços subiram.'},
+ {f:'As Câmaras Municipais foram criadas pela Coroa para organizar e controlar as atividades comerciais.', v:true,
+  e:'Elas cuidavam do comércio, da pecuária e da prestação de serviços em cada vila fundada.'},
+ {f:'A derrama foi criada porque a extração de ouro aumentou muito na década de 1760.', v:false,
+  e:'Foi o contrário: a extração DIMINUIU, ninguém conseguia pagar os impostos, e aí veio a derrama para cobrar os atrasados.'},
+ {f:'As ideias de liberdade que inspiraram a Conjuração Mineira vieram das ideias iluministas da Europa.', v:true,
+  e:'Jovens de famílias ricas estudavam na Europa e traziam essas ideias de liberdade e igualdade.'},
+ {f:'Henrique Fleiuss nasceu no Brasil e nunca publicou seus desenhos na imprensa.', v:false,
+  e:'Ele nasceu na ALEMANHA, mudou-se para o Brasil em 1859, e suas charges foram as PRIMEIRAS publicadas na imprensa brasileira.'},
+ {f:'A palavra "inconfidência" significa aliança, e "conjuração" significa infidelidade.', v:false,
+  e:'É o contrário! INCONFIDÊNCIA = infidelidade (nome dado pela Coroa). CONJURAÇÃO = aliança.'},
+ {f:'O quinto era um imposto de cinquenta por cento sobre o ouro extraído.', v:false,
+  e:'Era de VINTE por cento (20%). "Quinto" vem de um quinto, ou seja, 1/5 do total.'},
+ {f:'A Conjuração Baiana aconteceu antes da Conjuração Mineira.', v:false,
+  e:'Foi depois: a Mineira foi em 1788–1789 e a Baiana em 1798.'},
+ {f:'Os jesuítas foram os primeiros a descobrir ouro na região das Minas Gerais.', v:false,
+  e:'Quem descobriu as minas de ouro e diamantes, por volta de 1690, foram os BANDEIRANTES.'},
+ {f:'Dom João VI permaneceu no Brasil e nunca mais voltou a Portugal.', v:false,
+  e:'Ele voltou a Portugal em 1821, deixando aqui o filho Dom Pedro como príncipe regente.'},
+ {f:'Depois da Independência, os mais pobres passaram a viver com muito mais conforto nas cidades.', v:false,
+  e:'A sociedade manteve hábitos coloniais: os mais pobres não tiveram melhora de vida e as cidades seguiram sem infraestrutura.'},
+ {f:'A Vila de São Paulo foi fundada pelos jesuítas no litoral, ao lado do porto de Santos.', v:false,
+  e:'Foi fundada no PLANALTO DE PIRATININGA, no interior — e João Ramalho ajudou os padres a se estabelecerem lá.'},
+ {f:'O Poder Moderador continua existindo no Brasil até os dias de hoje.', v:false,
+  e:'Ele existiu na Constituição de 1824, no tempo do Império. Hoje temos apenas três poderes.'}
+];
+
+/* ========== ESTADO ========== */
+var rodada = [];      /* índices sorteados */
+var respostas = {};   /* posição na rodada -> resposta dada */
+var TOTAL = 12;
+
+function embaralhar(a){
+  var r = a.slice();
+  for(var i=r.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=r[i]; r[i]=r[j]; r[j]=t; }
+  return r;
+}
+
+function novaRodada(){
+  var todos = [];
+  for(var i=0;i<FRASES.length;i++) todos.push(i);
+  rodada = embaralhar(todos).slice(0, TOTAL);
+  respostas = {};
+  salvar();
+  desenhar();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function carregar(){
+  var bruto = lerDado(CHAVE);
+  if(bruto){
+    try{
+      var d = JSON.parse(bruto);
+      if(d.rodada && d.rodada.length === TOTAL){ rodada = d.rodada; respostas = d.respostas || {}; }
+      if(d.quando) document.getElementById('dataSalvo').textContent = 'Último salvamento: ' + d.quando;
+    }catch(e){}
+  }
+  if(!rodada.length) novaRodada();
+}
+function salvar(){
+  var agora = new Date().toLocaleString('pt-BR');
+  salvarDado(CHAVE, JSON.stringify({rodada:rodada, respostas:respostas, quando:agora}));
+  document.getElementById('dataSalvo').textContent = 'Último salvamento: ' + agora;
+}
+
+function desenhar(){
+  var cx = document.getElementById('jogo');
+  cx.innerHTML = '';
+  document.getElementById('resultado').classList.remove('mostra');
+
+  rodada.forEach(function(idx, pos){
+    var q = FRASES[idx];
+    var art = document.createElement('div');
+    art.className = 'carta';
+
+    var num = document.createElement('div');
+    num.className = 'num';
+    num.textContent = 'Placa ' + (pos+1) + ' de ' + TOTAL;
+    art.appendChild(num);
+
+    var fr = document.createElement('div');
+    fr.className = 'frase';
+    fr.textContent = q.f;
+    art.appendChild(fr);
+
+    var bts = document.createElement('div');
+    bts.className = 'botoes';
+    var bV = document.createElement('button');
+    bV.className = 'btn v'; bV.textContent = '✅ VERDADEIRO';
+    var bF = document.createElement('button');
+    bF.className = 'btn f'; bF.textContent = '❌ FALSO';
+    bts.appendChild(bV); bts.appendChild(bF);
+    art.appendChild(bts);
+
+    var ex = document.createElement('div');
+    ex.className = 'explica';
+    art.appendChild(ex);
+
+    bV.onclick = function(){ responder(pos, true, bV, bF, ex, q); };
+    bF.onclick = function(){ responder(pos, false, bV, bF, ex, q); };
+
+    if(respostas[pos] !== undefined) pintar(respostas[pos], bV, bF, ex, q);
+
+    cx.appendChild(art);
+  });
+  atualizarPlacar();
+}
+
+function pintar(dada, bV, bF, ex, q){
+  bV.disabled = true; bF.disabled = true;
+  var acertou = (dada === q.v);
+  var botaoEscolhido = dada ? bV : bF;
+  var botaoCerto = q.v ? bV : bF;
+  botaoEscolhido.classList.add(acertou ? 'escolhida-certa' : 'escolhida-errada');
+  if(!acertou) botaoCerto.classList.add('gabarito');
+  ex.classList.add('mostra');
+  if(acertou){
+    ex.className = 'explica mostra bom';
+    ex.innerHTML = '⭐ <b>Isso mesmo!</b> ' + q.e;
+  } else {
+    ex.className = 'explica mostra ops';
+    ex.innerHTML = '🔧 <b>Era ' + (q.v ? 'VERDADEIRO' : 'FALSO') + '.</b> ' + q.e;
+  }
+}
+
+function responder(pos, dada, bV, bF, ex, q){
+  if(respostas[pos] !== undefined) return;
+  respostas[pos] = dada;
+  pintar(dada, bV, bF, ex, q);
+  salvar();
+  atualizarPlacar();
+}
+
+function atualizarPlacar(){
+  var feitas = 0, acertos = 0;
+  rodada.forEach(function(idx, pos){
+    if(respostas[pos] !== undefined){
+      feitas++;
+      if(respostas[pos] === FRASES[idx].v) acertos++;
+    }
+  });
+  document.getElementById('pAtual').textContent = Math.min(feitas+1, TOTAL);
+  document.getElementById('pAcertos').textContent = acertos;
+  document.getElementById('pBarra').style.width = (feitas/TOTAL*100) + '%';
+  if(feitas === TOTAL) mostrarResultado(acertos);
+}
+
+function mostrarResultado(acertos){
+  var pct = Math.round(acertos/TOTAL*100);
+  var estrelas = Math.max(1, Math.round(acertos/TOTAL*5));
+  var linha = '';
+  for(var i=0;i<5;i++) linha += (i<estrelas ? '⭐' : '☆');
+  document.getElementById('rEstrelas').textContent = linha;
+  document.getElementById('rNota').textContent = acertos + ' de ' + TOTAL + ' (' + pct + '%)';
+  var msg;
+  if(pct >= 90) msg = '🏆 Obra impecável! Você domina a Unidade 6. Vá direto para o Simulado.';
+  else if(pct >= 70) msg = '👏 Muito bom! Passe pelo Resumo para reforçar os pontos que escaparam e jogue mais uma rodada.';
+  else if(pct >= 50) msg = '💪 Está no caminho! Volte à Leitura Guiada nas peças que ficaram confusas e jogue de novo.';
+  else msg = '🦉 Sem problema, aprendiz — toda obra tem retrabalho! Releia a Leitura Guiada com calma e volte aqui.';
+  document.getElementById('rMsg').textContent = msg;
+  document.getElementById('resultado').classList.add('mostra');
+}
+
+/* ========== EXPORTAR / IMPORTAR / ZERAR ========== */
+function exportar(){
+  var dados = JSON.stringify({rodada:rodada, respostas:respostas, quando:new Date().toLocaleString('pt-BR')}, null, 2);
+  var blob = new Blob([dados], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'quiz_vf_historia_5ano.json';
+  a.click();
+  abrirModal('Pronto! 📥','Arquivo salvo no seu computador.',[{texto:'Fechar'}]);
+}
+function importar(ev){
+  var f = ev.target.files[0]; if(!f) return;
+  var leitor = new FileReader();
+  leitor.onload = function(e){
+    try{
+      var d = JSON.parse(e.target.result);
+      if(d.rodada) rodada = d.rodada;
+      respostas = d.respostas || {};
+      salvar();
+      abrirModal('Restaurado! 📤','Vou recarregar a página.',[{texto:'Ok', acao:function(){ location.reload(); }}]);
+    }catch(err){
+      abrirModal('Ops!','Não consegui ler esse arquivo.',[{texto:'Fechar'}]);
+    }
+  };
+  leitor.readAsText(f);
+}
+function pedirZerar(){
+  abrirModal('Zerar tudo?','Seu progresso neste quiz será apagado e uma nova rodada começará. Quer mesmo?',
+    [{texto:'Sim, zerar', acao:function(){ apagarDado(CHAVE); rodada=[]; respostas={}; location.reload(); }},
+     {texto:'Cancelar', cinza:true}]);
+}
+
+carregar();
+desenhar();
+</script>
+</body>
+</html>

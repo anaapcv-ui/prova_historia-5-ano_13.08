@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📝 Simulado — Oficina da Nação | História 5º ano (Unidade 6)</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Comic Sans MS','Segoe UI',system-ui,sans-serif;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,.35) 0 2px, transparent 2px 46px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.35) 0 2px, transparent 2px 46px),
+      linear-gradient(160deg,#166534 0%,#15803d 45%,#b45309 100%);
+    min-height:100vh;color:#1c1917;padding:16px 14px 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto;}
+
+  .abas{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;}
+  .abas a{
+    text-decoration:none;background:#fffbeb;color:#78350f;font-weight:bold;
+    padding:9px 14px;border-radius:14px;font-size:.95em;border:3px solid #d97706;
+    box-shadow:0 4px 0 #92400e;
+  }
+  .abas a.ativa{background:#fbbf24;color:#451a03;}
+
+  .hero{
+    background:#fffbeb;border-radius:26px;padding:22px;text-align:center;
+    box-shadow:0 12px 34px rgba(0,0,0,.3);margin-bottom:18px;border:5px solid #d97706;
+  }
+  .hero .tools{font-size:26px;letter-spacing:8px;}
+  .hero h1{font-size:1.6em;color:#166534;margin:8px 0 4px;}
+  .hero .sub{color:#78350f;}
+  .mascote{
+    background:#ecfdf5;border:3px dashed #15803d;border-radius:18px;
+    padding:12px 14px;margin-top:14px;color:#14532d;text-align:left;
+  }
+
+  .placar{
+    position:sticky;top:8px;z-index:20;background:#fffbeb;border:4px solid #d97706;
+    border-radius:20px;padding:12px 16px;margin-bottom:18px;box-shadow:0 8px 20px rgba(0,0,0,.28);
+  }
+  .placar .linha{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between;}
+  .placar b{color:#166534;}
+  .barra{height:16px;background:#e7e5e4;border-radius:20px;overflow:hidden;margin-top:8px;border:2px solid #a8a29e;}
+  .barra i{display:block;height:100%;width:0;background:linear-gradient(90deg,#22c55e,#fbbf24);transition:width .4s;}
+
+  .questao{
+    background:#fffbeb;border-radius:20px;padding:18px 20px;margin-bottom:14px;
+    box-shadow:0 6px 18px rgba(0,0,0,.2);border-left:10px solid #d97706;
+  }
+  .questao .num{
+    display:inline-block;background:#166534;color:#fff;border-radius:20px;
+    padding:4px 14px;font-size:.88em;font-weight:bold;margin-bottom:10px;
+  }
+  .questao .enun{font-weight:bold;line-height:1.6;margin-bottom:12px;font-size:1.04em;}
+  .questao .texto-apoio{
+    background:#fff;border-left:6px solid #16a34a;border-radius:10px;padding:11px 13px;
+    margin-bottom:12px;font-style:italic;line-height:1.55;color:#44403c;font-size:.98em;
+  }
+  .alt{
+    display:block;width:100%;text-align:left;background:#fff;border:2px solid #d6d3d1;
+    border-radius:12px;padding:11px 13px;margin:7px 0;cursor:pointer;font-family:inherit;
+    font-size:1em;transition:.15s;line-height:1.45;
+  }
+  .alt:hover:not(:disabled){background:#fef3c7;border-color:#d97706;}
+  .alt:disabled{cursor:default;}
+  .alt.marcada{background:#dbeafe;border-color:#2563eb;font-weight:bold;}
+  .alt.certa{background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:bold;}
+  .alt.errada{background:#fee2e2;border-color:#dc2626;color:#7f1d1d;}
+
+  .acoes{text-align:center;margin:22px 0;}
+  .acoes button{
+    background:#16a34a;color:#fff;border:none;border-radius:16px;padding:16px 24px;
+    font-family:inherit;font-weight:bold;font-size:1.1em;cursor:pointer;
+    border-bottom:5px solid #14532d;
+  }
+  .acoes button:hover{transform:translateY(-2px);}
+  .acoes button:disabled{background:#a8a29e;border-color:#78716c;cursor:default;transform:none;}
+
+  .resultado{
+    background:#fffbeb;border:5px solid #16a34a;border-radius:24px;padding:24px;text-align:center;
+    box-shadow:0 10px 26px rgba(0,0,0,.25);display:none;margin-bottom:18px;
+  }
+  .resultado.mostra{display:block;}
+  .resultado h2{color:#166534;font-size:1.5em;margin-bottom:10px;}
+  .resultado .nota{font-size:2.6em;font-weight:bold;color:#b45309;margin:10px 0;}
+  .resultado .estrelas{font-size:1.9em;letter-spacing:4px;margin:8px 0;}
+  .resultado .msg{margin:12px 0;line-height:1.6;}
+  .resultado a, .resultado button{
+    display:inline-block;background:#16a34a;color:#fff;border:none;border-radius:14px;
+    padding:12px 18px;font-family:inherit;font-weight:bold;cursor:pointer;margin:6px 4px;
+    text-decoration:none;font-size:1em;
+  }
+  .resultado a.amarelo{background:#f59e0b;color:#451a03;}
+
+  .salvar{background:#1c1917;color:#fef3c7;border-radius:20px;padding:16px 18px;margin-top:22px;}
+  .salvar h3{font-size:1.05em;margin-bottom:8px;}
+  .salvar .data{font-size:.88em;opacity:.85;margin-bottom:10px;}
+  .salvar button{
+    background:#fbbf24;color:#451a03;border:none;border-radius:12px;padding:9px 14px;margin:4px 4px 0 0;
+    font-family:inherit;font-weight:bold;cursor:pointer;font-size:.94em;
+  }
+  .salvar .aviso{font-size:.85em;margin-top:10px;opacity:.8;}
+
+  .modal-fundo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:20px;}
+  .modal-fundo.abre{display:flex;}
+  .modal{background:#fffbeb;border-radius:22px;padding:22px;max-width:420px;width:100%;border:5px solid #d97706;text-align:center;}
+  .modal h3{color:#78350f;margin-bottom:10px;}
+  .modal p{margin-bottom:16px;line-height:1.5;}
+  .modal button{background:#16a34a;color:#fff;border:none;border-radius:12px;padding:10px 18px;font-family:inherit;font-weight:bold;cursor:pointer;margin:0 5px;}
+  .modal button.cinza{background:#78716c;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="abas">
+    <a href="index.html">🏠 Início</a>
+    <a href="leitura_guiada_historia_5ano.html">📖 Leitura Guiada</a>
+    <a href="jogo_vf_historia_5ano.html">🎯 Quiz V ou F</a>
+    <a href="resumo_historia_5ano.html">🗺️ Resumo</a>
+    <a href="simulado_historia_5ano.html" class="ativa">📝 Simulado</a>
+  </nav>
+
+  <div class="hero">
+    <div class="tools">📝 🏗️ 🔨 🧱 🏆</div>
+    <h1>Simulado — Vistoria Final</h1>
+    <div class="sub">História, 5º ano · Unidade 6: A construção de uma nação · 25 questões</div>
+    <div class="mascote">
+      🦉 <b>Mestre Coruja avisa:</b> aqui a obra é vistoriada de verdade. São <b>25 questões</b>
+      no formato da prova. <b>Responda todas primeiro</b> — o resultado só aparece quando você
+      clicar em <b>"Corrigir minha prova"</b>, igual na escola. Depois disso, abra o
+      <b>gabarito comentado</b> para entender cada questão. Sem pressa, jovem aprendiz!
+    </div>
+  </div>
+
+  <div class="placar">
+    <div class="linha">
+      <span><b>Respondidas:</b> <span id="pFeitas">0</span> de 25</span>
+      <span id="pNota">Ainda não corrigido</span>
+    </div>
+    <div class="barra"><i id="pBarra"></i></div>
+  </div>
+
+  <div class="resultado" id="resultado">
+    <h2>🏆 Vistoria concluída!</h2>
+    <div class="estrelas" id="rEstrelas"></div>
+    <div class="nota" id="rNota"></div>
+    <div class="msg" id="rMsg"></div>
+    <a class="amarelo" href="gabarito_historia_5ano.html">📋 Abrir o gabarito comentado</a>
+    <a href="resumo_historia_5ano.html">🗺️ Rever o Resumo</a>
+  </div>
+
+  <div id="prova"></div>
+
+  <div class="acoes">
+    <button id="btnCorrigir" onclick="pedirCorrigir()">✅ Corrigir minha prova</button>
+  </div>
+
+  <div class="salvar">
+    <h3>💾 Suas respostas ficam guardadas</h3>
+    <div class="data" id="dataSalvo">Ainda não salvo nesta sessão.</div>
+    <button onclick="exportar()">📥 Exportar</button>
+    <button onclick="document.getElementById('arqImp').click()">📤 Importar</button>
+    <button onclick="pedirZerar()">🗑️ Zerar tudo</button>
+    <input type="file" id="arqImp" accept=".json" style="display:none" onchange="importar(event)">
+    <div class="aviso">Pode fechar e voltar depois: a prova continua exatamente de onde parou.</div>
+  </div>
+</div>
+
+<div class="modal-fundo" id="modalFundo">
+  <div class="modal">
+    <h3 id="modalTit">Atenção</h3>
+    <p id="modalMsg"></p>
+    <div id="modalBotoes"></div>
+  </div>
+</div>
+
+<script>
+var memoria = {};
+function salvarDado(c,v){ try{ localStorage.setItem(c,v);}catch(e){ memoria[c]=v; } }
+function lerDado(c){ try{ var v=localStorage.getItem(c); return v!==null?v:(memoria[c]||null);}catch(e){ return memoria[c]||null; } }
+function apagarDado(c){ try{ localStorage.removeItem(c);}catch(e){} delete memoria[c]; }
+var CHAVE = 'oficinaNacao_simulado_v1';
+
+function abrirModal(t,m,bs){
+  document.getElementById('modalTit').textContent=t;
+  document.getElementById('modalMsg').textContent=m;
+  var cx=document.getElementById('modalBotoes'); cx.innerHTML='';
+  bs.forEach(function(b){
+    var bt=document.createElement('button'); bt.textContent=b.texto;
+    if(b.cinza) bt.className='cinza';
+    bt.onclick=function(){ fecharModal(); if(b.acao) b.acao(); };
+    cx.appendChild(bt);
+  });
+  document.getElementById('modalFundo').classList.add('abre');
+}
+function fecharModal(){ document.getElementById('modalFundo').classList.remove('abre'); }
+
+/* ============== 25 QUESTÕES ============== */
+var QUESTOES = [
+{ q:'Um grupo de estudantes fez uma lista com as características que definem um Estado. Assinale a alternativa que apresenta a lista correta.',
+  a:['Rei, exército e moeda própria','Território, população e governo próprios','Cidades grandes, portos e estradas','Língua, religião e bandeira próprias'], c:1 },
+
+{ q:'Mesmo com uma sociedade formada e diversas atividades produtivas, o Brasil colonial fazia parte do Estado de Portugal. Isso acontecia porque:',
+  a:['os brasileiros não falavam a língua portuguesa','o território brasileiro ainda não havia sido explorado','Portugal controlava e organizava todas as atividades desenvolvidas aqui','a população da colônia era formada apenas por indígenas'], c:2 },
+
+{ q:'O processo de formação do Estado brasileiro teve início com:',
+  a:['a chegada dos portugueses, em 1500','a criação do governo-geral, em 1549','a descoberta do ouro em Minas Gerais, por volta de 1690','a vinda da família real portuguesa para o Brasil, em 1808'], c:3 },
+
+{ q:'A Coroa portuguesa criou o governo-geral em 1549. Qual foi o principal motivo dessa decisão?',
+  a:['Centralizar a administração de uma colônia muito extensa e difícil de ocupar','Preparar a colônia para se tornar independente','Substituir os jesuítas na tarefa de catequizar os indígenas','Impedir a entrada dos bandeirantes no sertão'], c:0 },
+
+{ q:'Tomé de Sousa não veio sozinho para o Brasil. Quais grupos a Coroa portuguesa enviou junto com ele?',
+  a:['Apenas nobres e membros da família real','Somente comerciantes e banqueiros europeus','Funcionários do rei, soldados, trabalhadores de diferentes ofícios e padres jesuítas','Apenas engenheiros encarregados de construir estradas'], c:2 },
+
+{ q:'Relacione corretamente: <b>(A)</b> Tomé de Sousa · <b>(B)</b> Jesuítas · <b>(C)</b> Bandeirantes.',
+  a:['A = padres da Companhia de Jesus · B = governador-geral · C = paulistas que escravizavam indígenas',
+     'A = governador-geral designado pela Coroa · B = padres da Companhia de Jesus · C = paulistas que escravizavam indígenas',
+     'A = paulistas que escravizavam indígenas · B = governador-geral · C = padres da Companhia de Jesus',
+     'A = governador-geral designado pela Coroa · B = paulistas que escravizavam indígenas · C = padres da Companhia de Jesus'], c:1 },
+
+{ q:'Nas missões (ou reduções), os jesuítas adotaram uma estratégia para catequizar os povos indígenas. Qual foi ela?',
+  a:['Proibiram qualquer forma de arte dentro das aldeias','Obrigaram os indígenas a falar apenas latim durante as missas','Trouxeram professores europeus para ensinar a ler e escrever em francês','Aprenderam a língua dos nativos e usaram música, teatro e canto nos ensinamentos'], c:3 },
+
+{ q:'Leia o texto e responda.',
+  apoio:'"A produção de açúcar na região se tornava mais cara por causa da distância até os centros de distribuição para a Europa. Além disso, o solo e o clima da região não favoreciam o plantio da cana-de-açúcar."',
+  a:['O texto explica por que a capitania de São Vicente não prosperou como as do Nordeste','O texto explica por que o Rio de Janeiro se tornou capital da Colônia','O texto explica por que os jesuítas foram expulsos da colônia','O texto explica por que a Coroa criou o imposto do quinto'], c:0 },
+
+{ q:'Como os colonos paulistas faziam suas trocas comerciais no início da colonização?',
+  a:['Usavam moedas de ouro trazidas de Portugal','Usavam o que produziam nas lavouras, porque quase não circulava dinheiro na Colônia','Usavam barras de prata marcadas com o selo real','Não faziam nenhum tipo de troca comercial'], c:1 },
+
+{ q:'A cooperação entre jesuítas e colonos paulistas durou pouco tempo. A causa desse rompimento foi que:',
+  a:['os dois grupos queriam ocupar o mesmo terreno para construir igrejas','os colonos passaram a seguir outra religião','os interesses dos dois grupos em relação aos indígenas eram diferentes','os jesuítas se recusaram a aprender a língua dos nativos'], c:2 },
+
+{ q:'Assinale a alternativa que apresenta corretamente as três atividades dos bandeirantes.',
+  a:['Plantar cana-de-açúcar, exportar café e criar gado','Aprisionar indígenas para escravizar, destruir quilombos e procurar pedras e metais preciosos','Fundar cidades, construir igrejas e catequizar indígenas','Cobrar impostos, fiscalizar minas e organizar as Câmaras Municipais'], c:1 },
+
+{ q:'Uma consequência importante das expedições dos bandeirantes pelo sertão foi:',
+  a:['a expansão do território brasileiro para além do limite do Tratado de Tordesilhas','a assinatura do Tratado de Tordesilhas entre Portugal e Espanha','o fim do trabalho escravizado na colônia','a transferência da capital de Salvador para o Rio de Janeiro'], c:0 },
+
+{ q:'Sobre o Quilombo dos Palmares, é correto afirmar que:',
+  a:['foi fundado pelos jesuítas para abrigar indígenas catequizados','ficava em Minas Gerais e existiu por menos de dez anos','chegou a reunir mais de 20 mil pessoas e foi destruído em 1694, quando Zumbi foi morto','foi reconhecido oficialmente pela Coroa portuguesa como uma vila'], c:2 },
+
+{ q:'Numere mentalmente os fatos em ordem cronológica e assinale a sequência correta.<br>I. Criação da capitania das Minas Gerais.<br>II. Descoberta de minas de ouro e diamantes pelos bandeirantes.<br>III. Migração de milhares de colonos em busca de riquezas.<br>IV. Surgimento de uma sociedade urbana, rica e populosa.',
+  a:['I → II → III → IV','II → III → IV → I','III → II → I → IV','IV → III → II → I'], c:1 },
+
+{ q:'Leia o texto e complete corretamente.',
+  apoio:'"Uma das formas de controle criada pela Coroa foi ________, um imposto por meio do qual vinte por cento de toda a extração das minas deveria ir para a Coroa. Depois, para cobrar os impostos atrasados, a Coroa estabeleceu ________, pela qual funcionários invadiam as casas dos habitantes para confiscar bens."',
+  a:['a derrama – o quinto','a bandeira – a derrama','o ouro – a fundição','o quinto – a derrama'], c:3 },
+
+{ q:'As casas de fundição, criadas pela Coroa portuguesa na região das minas, serviam para:',
+  a:['guardar os alimentos que abasteciam as vilas','fabricar as ferramentas usadas pelos mineradores','abrigar os funcionários encarregados da derrama','derreter o ouro extraído e transformá-lo em barras marcadas com o selo real'], c:3 },
+
+{ q:'Por que a Monarquia Portuguesa deu o nome de "Inconfidência Mineira" ao movimento ocorrido em Vila Rica?',
+  a:['Porque "inconfidência" significa infidelidade, e para a Coroa os revoltosos traíam o rei','Porque "inconfidência" significa aliança entre pessoas de um mesmo grupo','Porque o movimento foi organizado por confidentes do governador','Porque os participantes eram funcionários de confiança da Coroa'], c:0 },
+
+{ q:'Sobre a posição dos participantes da Conjuração Mineira a respeito da escravidão, é correto afirmar que:',
+  a:['todos defendiam o fim imediato da escravidão','a maioria, formada por proprietários de terras e de escravizados, queria mantê-la','o tema nunca chegou a ser discutido pelo grupo','a Coroa portuguesa os obrigou a defender a abolição'], c:1 },
+
+{ q:'Qual foi o destino de Joaquim José da Silva Xavier, o Tiradentes?',
+  a:['Foi perdoado pela Coroa e voltou a viver em Vila Rica','Fugiu para a Europa e nunca mais retornou ao Brasil','Assumiu a responsabilidade pela tentativa de revolta e foi executado em 21 de abril de 1792','Tornou-se governador da capitania das Minas Gerais'], c:2 },
+
+{ q:'Quais grupos participaram da Conjuração Baiana, em 1798?',
+  a:['Apenas os grandes proprietários de engenhos de açúcar','Apenas padres jesuítas e indígenas catequizados','Somente soldados portugueses insatisfeitos com o salário','Membros da elite local, comerciantes, alfaiates, soldados, artesãos e pessoas escravizadas'], c:3 },
+
+{ q:'Leia o trecho de um panfleto da Conjuração Baiana e responda.',
+  apoio:'"... o tempo em que todos seremos iguais."',
+  a:['O trecho se relaciona ao objetivo de acabar com a escravidão na Bahia','O trecho se relaciona ao objetivo de manter o monopólio comercial português','O trecho se relaciona ao desejo de coroar um novo rei na Bahia','O trecho se relaciona ao pedido de mais impostos para a capitania'], c:0 },
+
+{ q:'Assinale a alternativa que apresenta uma diferença correta entre os dois movimentos.',
+  a:['A Conjuração Mineira teve ampla participação popular; a Baiana foi feita só pela elite','A Conjuração Mineira propunha o fim da escravidão; a Baiana queria mantê-la','A Conjuração Mineira foi liderada pela elite colonial; a Baiana teve ampla participação popular','A Conjuração Mineira queria uma monarquia; a Baiana queria manter o Brasil como colônia'], c:2 },
+
+{ q:'Sobre o processo de Independência do Brasil, assinale a afirmação INCORRETA.',
+  a:['A Independência foi um processo que teve início com a transferência da Corte portuguesa, em 1808','O primeiro acontecimento do processo foi quando Dom João VI elevou o Brasil à condição de Reino Unido de Portugal','Em 1821, os portugueses passaram a exigir o retorno da família real, para retomar o controle sobre o Brasil','Em 9 de janeiro de 1822, Dom Pedro declarou que permaneceria no Brasil'], c:1 },
+
+{ q:'O que aconteceu com o Brasil no período de 1815 a 1822?',
+  a:['O Brasil voltou à condição de colônia e as províncias viraram capitanias','O Brasil tornou-se uma república governada por Tiradentes','O Brasil foi elevado a parte integrante do Reino Unido de Portugal e as capitanias passaram a se chamar províncias','O Brasil transferiu sua capital para Salvador'], c:2 },
+
+{ q:'Depois da Independência, o Brasil se tornou um Estado. Ainda assim, é correto afirmar que:',
+  a:['a escravidão continuou sendo a base da força produtiva durante o século XIX','todos os brasileiros passaram a ter os mesmos direitos políticos','as cidades ganharam rapidamente saneamento básico e água encanada','a produção de café foi proibida em todo o território'], c:0 }
+];
+
+/* ============== ESTADO ============== */
+var respostas = {};
+var corrigido = false;
+var TOTAL = QUESTOES.length;
+
+function carregar(){
+  var b = lerDado(CHAVE);
+  if(b){
+    try{
+      var d = JSON.parse(b);
+      respostas = d.respostas || {};
+      corrigido = !!d.corrigido;
+      if(d.quando) document.getElementById('dataSalvo').textContent = 'Último salvamento: ' + d.quando;
+    }catch(e){}
+  }
+}
+function salvar(){
+  var agora = new Date().toLocaleString('pt-BR');
+  salvarDado(CHAVE, JSON.stringify({respostas:respostas, corrigido:corrigido, quando:agora}));
+  document.getElementById('dataSalvo').textContent = 'Último salvamento: ' + agora;
+}
+
+function montar(){
+  var cx = document.getElementById('prova');
+  cx.innerHTML = '';
+  QUESTOES.forEach(function(q, i){
+    var art = document.createElement('div');
+    art.className = 'questao';
+
+    var num = document.createElement('div');
+    num.className = 'num'; num.textContent = 'Questão ' + (i+1);
+    art.appendChild(num);
+
+    var en = document.createElement('div');
+    en.className = 'enun'; en.innerHTML = q.q;
+    art.appendChild(en);
+
+    if(q.apoio){
+      var ap = document.createElement('div');
+      ap.className = 'texto-apoio'; ap.textContent = q.apoio;
+      art.appendChild(ap);
+    }
+
+    q.a.forEach(function(txt, j){
+      var b = document.createElement('button');
+      b.className = 'alt';
+      b.innerHTML = '<b>' + String.fromCharCode(97+j) + ')</b> ' + txt;
+      if(respostas[i] === j) b.classList.add('marcada');
+      if(corrigido){
+        b.disabled = true;
+        if(j === q.c) b.classList.add('certa');
+        else if(respostas[i] === j) b.classList.add('errada');
+      } else {
+        b.onclick = function(){ marcar(i, j); };
+      }
+      art.appendChild(b);
+    });
+
+    cx.appendChild(art);
+  });
+  document.getElementById('btnCorrigir').disabled = corrigido;
+  if(corrigido){
+    document.getElementById('btnCorrigir').textContent = '✔️ Prova já corrigida';
+    mostrarResultado();
+  }
+  atualizarPlacar();
+}
+
+function marcar(i, j){
+  respostas[i] = j;
+  salvar();
+  montar();
+}
+
+function contarAcertos(){
+  var n = 0;
+  QUESTOES.forEach(function(q, i){ if(respostas[i] === q.c) n++; });
+  return n;
+}
+
+function atualizarPlacar(){
+  var feitas = Object.keys(respostas).length;
+  document.getElementById('pFeitas').textContent = feitas;
+  document.getElementById('pBarra').style.width = (feitas/TOTAL*100) + '%';
+  if(corrigido){
+    var ac = contarAcertos();
+    document.getElementById('pNota').innerHTML = '<b>Nota:</b> ' + ac + '/' + TOTAL;
+  }
+}
+
+function pedirCorrigir(){
+  var feitas = Object.keys(respostas).length;
+  if(feitas < TOTAL){
+    abrirModal('Faltam questões!',
+      'Você respondeu ' + feitas + ' de ' + TOTAL + '. Quer corrigir mesmo assim? As não respondidas contarão como erro.',
+      [{texto:'Corrigir assim mesmo', acao:corrigir},{texto:'Voltar e responder', cinza:true}]);
+  } else {
+    abrirModal('Tudo pronto?','Depois de corrigir, não dá mais para mudar as respostas. Vamos lá?',
+      [{texto:'Sim, corrigir', acao:corrigir},{texto:'Ainda não', cinza:true}]);
+  }
+}
+
+function corrigir(){
+  corrigido = true;
+  salvar();
+  montar();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function mostrarResultado(){
+  var ac = contarAcertos();
+  var pct = Math.round(ac/TOTAL*100);
+  var est = Math.max(1, Math.round(ac/TOTAL*5));
+  var linha = '';
+  for(var i=0;i<5;i++) linha += (i<est ? '⭐' : '☆');
+  document.getElementById('rEstrelas').textContent = linha;
+  document.getElementById('rNota').textContent = ac + ' de ' + TOTAL + ' (' + pct + '%)';
+  var msg;
+  if(pct >= 90) msg = '🏆 Obra aprovada com louvor! Você está muito bem preparado para a prova. Passe no gabarito só para conferir os comentários.';
+  else if(pct >= 70) msg = '👏 Muito bom! Abra o gabarito e leia com atenção os comentários das questões que você errou.';
+  else if(pct >= 50) msg = '💪 Bom começo! Leia o gabarito comentado inteiro e depois volte ao Resumo para reforçar as partes fracas.';
+  else msg = '🦉 Calma, aprendiz — toda obra tem retrabalho! Leia o gabarito, volte à Leitura Guiada e refaça o simulado amanhã.';
+  document.getElementById('rMsg').textContent = msg;
+  document.getElementById('resultado').classList.add('mostra');
+}
+
+function exportar(){
+  var dados = JSON.stringify({respostas:respostas, corrigido:corrigido, quando:new Date().toLocaleString('pt-BR')}, null, 2);
+  var blob = new Blob([dados], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'simulado_historia_5ano.json';
+  a.click();
+  abrirModal('Pronto! 📥','Arquivo salvo no seu computador.',[{texto:'Fechar'}]);
+}
+function importar(ev){
+  var f = ev.target.files[0]; if(!f) return;
+  var leitor = new FileReader();
+  leitor.onload = function(e){
+    try{
+      var d = JSON.parse(e.target.result);
+      respostas = d.respostas || {};
+      corrigido = !!d.corrigido;
+      salvar();
+      abrirModal('Restaurado! 📤','Vou recarregar a página.',[{texto:'Ok', acao:function(){ location.reload(); }}]);
+    }catch(err){ abrirModal('Ops!','Não consegui ler esse arquivo.',[{texto:'Fechar'}]); }
+  };
+  leitor.readAsText(f);
+}
+function pedirZerar(){
+  abrirModal('Zerar tudo?','Todas as respostas do simulado serão apagadas e você poderá refazer a prova. Quer mesmo?',
+    [{texto:'Sim, zerar', acao:function(){ apagarDado(CHAVE); respostas={}; corrigido=false; location.reload(); }},
+     {texto:'Cancelar', cinza:true}]);
+}
+
+carregar();
+montar();
+</script>
+</body>
+</html>
